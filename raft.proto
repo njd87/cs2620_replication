@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package raft;
+
+
+service RaftService {
+    // heartbeat makes sure leader is still alive
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+
+    // replicate actions allows followers to replicate actions
+    rpc ReplicateAction(ReplicateActionRequest) returns (ReplicateActionResponse);
+}
+
+
+message HeartbeatRequest {
+    int64 term = 1;       
+    string leaderId = 2;  
+}
+
+message HeartbeatResponse {
+    int64 term = 1;      
+    bool success = 2;     
+}
+
+message ReplicateActionRequest {
+    int64 term = 1;         
+    string leaderId = 2;    
+    int64 actionId = 3;     
+    string action = 4;      
+}
+
+message ReplicateActionResponse {
+    int64 term = 1;         
+    bool success = 2;       
+    int64 actionId = 3;     
+}

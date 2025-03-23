@@ -1,0 +1,26 @@
+03/20/25
+
+We'll be using our grpc implementation. To start, we have the following general outline:
+
+- The client will connect to the leader address
+- The leader will connect to 4 followers, since follows 2(2) + 1
+- When the client interacts with the leader, the leader has to update each of the other servers
+    - We anticipate this to be the hardest part, since (at this point) we don't know how to implement this yet
+- If a follower fails, continue as usual (the leader only needs majority to continue, at least 3)
+- If the leader fails, we need to elect a follower
+    - Reading online, this can be done using something called Raft
+    - If a certain amount of time has passed and there is no message from the leader, a follower nominates itself and asks for majority votes
+
+It might be useful to have a RaftNode for servers to talk to each other, so ChatResponse is client-server, and Raft is server-server
+
+Ok, so first, we need to rework the "online clients" system.
+
+03/22/25
+After experimenting a lot and reading online, we are going to take it step by step.
+
+First: Making new databases for each replica (5 total for 2 fault tolerant)
+UNIT TESTS CREATED:
+    TestDatabaseSetup
+
+First (possibly easiest step), we just want to have multiple servers connected.
+The client will still only connect to one server (the assumed leader)
