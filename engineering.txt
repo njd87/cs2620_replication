@@ -24,3 +24,9 @@ UNIT TESTS CREATED:
 
 First (possibly easiest step), we just want to have multiple servers connected.
 The client will still only connect to one server (the assumed leader)
+
+03/23/25
+Added raft.proto (for real this time) that has one service and 3 main functions:
+    One for voting (between raft)
+    One for entries (heartbeats, replication)
+    One for getleader (for client to get leader in case of leader crash)

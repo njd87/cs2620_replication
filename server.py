@@ -17,8 +17,8 @@ import raft_pb2_grpc
 import json
 import traceback
 
-if len(sys.argv) != 1:
-    logging.error("Usage: python server.py")
+if len(sys.argv) != 2:
+    logging.error("Usage: python server.py <server_index>")
     sys.exit(1)
 
 # if it is and the argument is NOT an integer between 0 and 4
@@ -57,8 +57,24 @@ except KeyError as e:
     logging.error(f"KeyError for config: {e}")
     exit(1)
 
+'''
+The following are parameters that the server
+needs to keep constant
+'''
 # map of clients to queues for sending responses
 clients = {}
+
+# get names of all servers
+all_servers = [
+    f"{config['servers']['hosts'][i]}:{config['servers']['ports'][i]}"
+    for i in range(5)
+    if i != idx
+]
+
+# raft params
+current_term = 0
+voted_for = None
+log = []
 
 
 class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
@@ -487,8 +503,53 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
 
     TODO: write description
     """
+    def Vote(self, request, context):
+        """
+        Handles VoteRequest RPC.
+        """
+        global current_term, voted_for
 
+        logging.info(f"Received VoteRequest: term={request.term}, candidate_id={request.candidate_id}, "
+                     f"last_log_index={request.last_log_index}, last_log_term={request.last_log_term}")
+        
+        # if the candidate's term is less than the current term, reject the vote
+        if request.term < current_term:
+            response = raft_pb2.VoteResponse(
+                term=current_term,
+                vote_granted=False
+            )
+            return response
+        
+        # if the candidate's term is greater than the current term, update the current term and vote for the candidate
+        if request.term > current_term:
+            current_term = request.term
+            voted_for = request.candidate_id
+            response = raft_pb2.VoteResponse(
+                term=current_term,
+                vote_granted=True
+            )
+            return response
 
+    def AppendEntries(self, request, context):
+        """
+        Handles AppendEntriesRequest RPC.
+        """
+        logging.info(f"Received AppendEntriesRequest: term={request.term}, leader_id={request.leader_id}, "
+                     f"prev_log_index={request.prev_log_index}, prev_log_term={request.prev_log_term}, "
+                     f"leader_commit={request.leader_commit}")
+        # Iterate over the log entries in the request and log them. If length of log is greater than our log, append
+        new_entries = request.entries[len(log):]
+        for entry in new_entries:
+            log.append(entry)
+            '''
+            TODO: act with entries
+            '''
+
+        response = raft_pb2.AppendEntriesResponse(
+            term=request.term,
+            success=True
+        )
+        return response
 
 def serve():
     """
@@ -496,8 +557,28 @@ def serve():
     """
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     chat_pb2_grpc.add_ChatServiceServicer_to_server(ChatServiceServicer(), server)
+    raft_pb2_grpc.add_RaftServiceServicer_to_server(RaftServiceServicer(), server)
+    print(f"{host}:{port}")
     server.add_insecure_port(f"{host}:{port}")
     server.start()
+
+    # make sure all servers are running before starting
+    for other_server in all_servers:
+        while True:
+            try:
+                channel = grpc.insecure_channel(other_server)
+                # grpc.channel_ready_future(channel).result(timeout=0.5)
+                stub = raft_pb2_grpc.RaftServiceStub(channel)
+                response = stub.Vote(raft_pb2.VoteRequest(term=-1, candidate_id=0, last_log_index=0, last_log_term=0))
+                logging.info(f"Connected to {other_server} with response: {response}")
+                print('Connected to', other_server)
+                # close channel
+                channel.close()
+                break
+            except Exception as e:
+                logging.error(f"Error connecting to {server}: {e}")
+                time.sleep(1)
+
     logging.info(f"Server started on port {port}")
     try:
         while True:
