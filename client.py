@@ -9,10 +9,10 @@ import logging
 
 import grpc
 
-import services.chat_pb2_grpc as chat_pb2_grpc
-import services.chat_pb2 as chat_pb2
-import services.raft_pb2_grpc as raft_pb2_grpc
-import services.raft_pb2 as raft_pb2
+import chat_pb2_grpc
+import chat_pb2
+import raft_pb2_grpc
+import raft_pb2
 # log to a file
 log_file = "logs/client.log"
 

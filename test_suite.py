@@ -4,8 +4,10 @@ import os
 import sqlite3
 
 import grpc
-import chat_pb2
 import chat_pb2_grpc
+import chat_pb2
+import raft_pb2_grpc
+import raft_pb2
 from server import ChatServiceServicer
 from setup import reset_database, structure_tables
 from test_server import handle_requests
