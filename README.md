@@ -1,24 +1,36 @@
 # How to Start
 
-Run the server in a first terminal:
+Run all 5 servers in 5 terminals:
 
 ```console
-python3 server.py
+python3 server.py 0
 ```
 
-Then run clients in separate terminals:
-
+```console
+python3 server.py 1
+```
 
 ```console
-python3 client.py <host> <port>
+python3 server.py 2
+```
+
+```console
+python3 server.py 3
+```
+
+```console
+python3 server.py 4
+```
+
+The indices correspond to the hosts and ports in config.
+
+Running a client is simple:
+
+```console
+python3 client.py
 ``` 
 
-Default host and port given in config:
-
-
-```console
-python3 client.py 127.0.0.1 65432
-```
+It will automatically connect and find new leader whenever needed. Feel free to change host and port numbers.
 
 # How to Use
 
