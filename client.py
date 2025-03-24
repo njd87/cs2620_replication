@@ -2,18 +2,19 @@ import os
 import queue
 import sys
 import threading
+import time
 import tkinter as tk
 import json
 import logging
 
 import grpc
 
-import chat_pb2
-import chat_pb2_grpc
-
+import services.chat_pb2_grpc as chat_pb2_grpc
+import services.chat_pb2 as chat_pb2
+import services.raft_pb2_grpc as raft_pb2_grpc
+import services.raft_pb2 as raft_pb2
 # log to a file
 log_file = "logs/client.log"
-db_file = "data/messenger.db"
 
 logging.basicConfig(
     filename=log_file,
@@ -26,6 +27,16 @@ logging.basicConfig(
 if not os.path.exists(log_file):
     with open(log_file, "w") as f:
         pass
+
+# open config/config.json
+with open("config/config.json") as f:
+    config = json.load(f)
+
+# get names of all servers
+all_servers = [
+    f"{config['servers']['hosts'][i]}:{config['servers']['ports'][i]}"
+    for i in range(5)
+]
 
 # A thread-safe queue for outgoing ChatRequests.
 outgoing_queue = queue.Queue()
@@ -67,11 +78,10 @@ class ClientUI:
         self.root = tk.Tk()
         self.root.title("Messenger")
         self.root.geometry("800x600")
-
-        self.channel = grpc.insecure_channel(f"{host}:{port}")
-        self.stub = chat_pb2_grpc.ChatServiceStub(self.channel)
-
+        
         self.credentials = None
+        self.leader_address = None
+        self.check_for_leader()
 
         # start connection
         # Start a background thread to process server responses.
@@ -241,6 +251,52 @@ class ClientUI:
                         self.rerender_users()
         except grpc.RpcError as e:
             logging.error(f"Error receiving response: {e}")
+            self.check_for_leader()
+    
+    def check_for_leader(self, retries=6):
+        print('leader not found. checking for new leader...')
+        time.sleep(1)
+        self.leader_address = None
+        # we want to make sure that we are connected to the leader
+        # if we are not connected OR we had errors in connecting to the leader
+        # we need to ask replicas for new leader
+        for server in all_servers:
+            try:
+                channel = grpc.insecure_channel(server)
+                stub = raft_pb2_grpc.RaftServiceStub(channel)
+                response = stub.GetLeader(raft_pb2.GetLeaderRequest(useless=True))
+                if response.leader_address:
+                    print('Leader found:', response.leader_address)
+                    self.leader_address = response.leader_address
+                    break
+            except grpc.RpcError as e:
+                logging.error(f"Error connecting to {server}: {e}")
+        if not self.leader_address:
+            if retries <= 0:
+                logging.error("Unable to connect to any server.")
+                sys.exit(1)
+            logging.error(f"Unable to connect to any server. Retries left: {retries}")
+            self.check_for_leader(retries - 1)
+
+
+
+        self.channel = grpc.insecure_channel(self.leader_address)
+        self.stub = chat_pb2_grpc.ChatServiceStub(self.channel)
+
+        # send connect message to leader
+        self.send_connect_request()
+
+    def send_connect_request(self):
+        """
+        
+        """
+        # create a request
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.CONNECT,
+            username=self.credentials
+        )
+
+        outgoing_queue.put(request)
 
     def reset_login_vars(self):
         """
@@ -906,12 +962,9 @@ The rest of the code is for setting up the connection and running the client.
 """
 
 
-if len(sys.argv) != 3:
-    logging.error("Usage: python client.py <host> <port>")
+if len(sys.argv) != 1:
+    logging.error("Usage: python client.py")
     sys.exit(1)
-
-host = sys.argv[1]
-port = int(sys.argv[2])
 
 if __name__ == "__main__":
     client_ui = ClientUI()

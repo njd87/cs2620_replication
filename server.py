@@ -1,5 +1,6 @@
 import hashlib
 import os
+import random
 import sqlite3
 import sys
 import grpc
@@ -10,10 +11,10 @@ import threading
 import json
 import logging
 
-import chat_pb2
 import chat_pb2_grpc
-import raft_pb2
+import chat_pb2
 import raft_pb2_grpc
+import raft_pb2
 import json
 import traceback
 
@@ -72,9 +73,15 @@ all_servers = [
 ]
 
 # raft params
+raft_state = "FOLLOWER"
 current_term = 0
 voted_for = None
 log = []
+leader_address = None
+rec_votes = 0
+num_servers = len(all_servers) + 1
+# timer for election timeout
+timer = random.randint(1, 5)
 
 
 class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
@@ -82,6 +89,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
     ChatServiceServicer class for ChatServiceServicer
 
     This class handles the main chat functionality of the server, sending responses via queues.
+    All log messages in this service begin with [CHAT].
     """
 
     def Chat(self, request_iterator, context):
@@ -105,7 +113,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
             try:
                 for req in request_iterator:
                     # print size of req in bytes
-                    logging.info(f"Size of request: {sys.getsizeof(req)} bytes")
+                    logging.info(f"[CHAT] Size of request: {sys.getsizeof(req)} bytes")
 
                     if req.action == chat_pb2.CHECK_USERNAME:
                         # check if username is already in use
@@ -221,6 +229,8 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon.close()
 
                         # add user to clients
+                        print('Pinging all users')
+                        print(f'Online users: {clients.keys()}')
                         username = req.username
                         clients[username] = client_queue
 
@@ -232,7 +242,6 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                                 )
                             )
 
-                        # ping all online users
                     elif req.action == chat_pb2.LOAD_CHAT:
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
@@ -246,7 +255,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                             )
                             result = sqlcur.fetchall()
                         except Exception as e:
-                            logging.error(f"Error in Load Chat: {e}")
+                            logging.error(f"[CHAT] Error in Load Chat: {e}")
                             result = []
 
                         formatted_messages = []
@@ -266,6 +275,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                                 action=chat_pb2.LOAD_CHAT, messages=formatted_messages
                             )
                         )
+                        sqlcon.close()
 
                     elif req.action == chat_pb2.SEND_MESSAGE:
                         sender = req.sender
@@ -306,11 +316,12 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                                     )
                                 )
 
-                        except:
-                            logging.error("Error sending message")
+                        except Exception as e:
+                            logging.error(f"[CHAT] Error sending message: {e}")
                             message_id = None
 
                         sqlcon.close()
+
                     elif req.action == chat_pb2.PING:
                         action = req.action
                         sender = req.sender
@@ -329,7 +340,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
 
-                        logging.info(f"Updating message {message_id} to delivered.")
+                        logging.info(f"[CHAT] Updating message {message_id} to delivered.")
 
                         sqlcur.execute(
                             "UPDATE messages SET delivered=1 WHERE message_id=?",
@@ -338,6 +349,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon.commit()
 
                         sqlcon.close()
+
                     elif req.action == chat_pb2.VIEW_UNDELIVERED:
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
@@ -378,6 +390,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
 
                         sqlcon.commit()
                         sqlcon.close()
+
                     elif req.action == chat_pb2.DELETE_MESSAGE:
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
@@ -466,25 +479,31 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                             )
 
                         sqlcon.close()
+
                     elif req.action == chat_pb2.PING_USER:
                         # ping that a user has been added or deleted
                         action = req.action
                         ping_user = req.ping_user
                         client_queue.put(
                             chat_pb2.ChatResponse(action=action, ping_user=ping_user)
-                        ) 
+                        )
+                    elif req.action == chat_pb2.CONNECT:
+                        # a new leader was chosen, client connected to new leader
+                        # add the user to the clients if they are signed in
+                        if (req.username != "") and (req.username not in clients):
+                            clients[req.username] = client_queue
                     else:
-                        logging.error(f"Invalid action: {req.action}")
+                        logging.error(f"[CHAT] Invalid action: {req.action}")
             except Exception as e:
                 tb = traceback.extract_tb(e.__traceback__)
                 line_number = tb[-1].lineno if tb else "unknown"
                 logging.error(
-                    f"Error handling requests at line {line_number}: {traceback.format_exc()}"
+                    f"[CHAT] Error handling requests at line {line_number}: {traceback.format_exc()}"
                 )
             finally:
                 if username in clients:
                     del clients[username]
-                    logging.info(f"{username} disconnected.")
+                    logging.info(f"[CHAT] {username} disconnected.")
 
         # Run request handling in a separate thread.
         threading.Thread(target=handle_requests, daemon=True).start()
@@ -509,7 +528,7 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
         """
         global current_term, voted_for
 
-        logging.info(f"Received VoteRequest: term={request.term}, candidate_id={request.candidate_id}, "
+        logging.info(f"[RAFT] Received VoteRequest: term={request.term}, candidate_id={request.candidate_id}, "
                      f"last_log_index={request.last_log_index}, last_log_term={request.last_log_term}")
         
         # if the candidate's term is less than the current term, reject the vote
@@ -521,7 +540,7 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
             return response
         
         # if the candidate's term is greater than the current term, update the current term and vote for the candidate
-        if request.term > current_term:
+        if request.term >= current_term:
             current_term = request.term
             voted_for = request.candidate_id
             response = raft_pb2.VoteResponse(
@@ -534,7 +553,8 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
         """
         Handles AppendEntriesRequest RPC.
         """
-        logging.info(f"Received AppendEntriesRequest: term={request.term}, leader_id={request.leader_id}, "
+        global timer, log, current_term, leader_address, raft_state
+        logging.info(f"[RAFT] Received AppendEntriesRequest: term={request.term}, leader_address={request.leader_address}, "
                      f"prev_log_index={request.prev_log_index}, prev_log_term={request.prev_log_term}, "
                      f"leader_commit={request.leader_commit}")
         # Iterate over the log entries in the request and log them. If length of log is greater than our log, append
@@ -545,11 +565,88 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
             TODO: act with entries
             '''
 
+        # update timer
+        timer = time.time() + random.uniform(3, 5)
+        raft_state = "FOLLOWER"
+
+
         response = raft_pb2.AppendEntriesResponse(
             term=request.term,
             success=True
         )
         return response
+    
+    def GetLeader(self, request, context):
+        return raft_pb2.GetLeaderResponse(leader_address=leader_address)
+    
+# act defines how each server should act
+def act():
+    global raft_state, current_term, voted_for, log, leader_address, timer, rec_votes
+    current_time = time.time()
+
+    # check to see if we need to change state
+    if raft_state == "FOLLOWER":
+        # no heartbeat, become candidate
+        if current_time >= timer:
+            raft_state = "CANDIDATE"
+            current_term += 1
+            # timer = current_time + random.uniform(3, 5)
+            logging.info(f"[RAFT] No leader. Becoming candidate for term {current_term}.")
+    elif raft_state == "CANDIDATE":
+        # If election times out (e.g., no majority reached), start a new election round.
+        if current_time >= timer:
+            rec_votes = 1
+            current_term += 1
+            voted_for = idx  # vote for self
+            timer = current_time + random.uniform(3, 5)
+            logging.info(f"[RAFT] Server {idx} election timeout as candidate. Starting new election for term {current_term}.")
+            for other_servers in all_servers:
+                try:
+                    channel = grpc.insecure_channel(other_servers)
+                    stub = raft_pb2_grpc.RaftServiceStub(channel)
+                    response = stub.Vote(raft_pb2.VoteRequest(
+                        term=current_term,
+                        candidate_id=idx,
+                        last_log_index=len(log) - 1,
+                        last_log_term=log[-1].term if log else 0
+                    ))
+                    logging.info(f"[RAFT] Sent vote request to {other_servers} with response: {response}")
+                    if response.vote_granted:
+                        rec_votes += 1
+                except Exception as e:
+                    logging.error(f"[RAFT] Error sending vote request to {other_servers}: {e}")
+            if rec_votes > num_servers // 2:
+                print(f"I am the leader, log number {idx + 1}")
+                raft_state = "LEADER"
+                leader_address = f"{host}:{port}"
+                logging.info(f"[RAFT] Server {idx} elected as leader for term {current_term}.")
+        # In a complete implementation, here the candidate would send out vote requests.
+    elif raft_state == "LEADER":
+        # As leader, send periodic heartbeats (AppendEntries with no new entries) to all followers.
+        for other_server in all_servers:
+            try:
+                channel = grpc.insecure_channel(other_server)
+                stub = raft_pb2_grpc.RaftServiceStub(channel)
+                # For a heartbeat, it’s typical to send an empty list of entries.
+                response = stub.AppendEntries(raft_pb2.AppendEntriesRequest(
+                    term=current_term,
+                    leader_address=leader_address,
+                    prev_log_index=len(log) - 1,
+                    prev_log_term=log[-1].term if log else 0,
+                    entries=[],  # heartbeat: no new log entries
+                    leader_commit=0
+                ))
+                logging.info(f"[RAFT] Sent heartbeat to {other_server} with response: {response}")
+                channel.close()
+            except Exception as e:
+                logging.error(f"[RAFT] Error sending heartbeat to {other_server}: {e}")
+        # Set the next heartbeat timeout (e.g., 1 second later)
+        timer = current_time + 1
+    else:
+        logging.error(f"[RAFT] Invalid state: {raft_state}")
+
+    time.sleep(0.1)
+
 
 def serve():
     """
@@ -570,19 +667,20 @@ def serve():
                 # grpc.channel_ready_future(channel).result(timeout=0.5)
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
                 response = stub.Vote(raft_pb2.VoteRequest(term=-1, candidate_id=0, last_log_index=0, last_log_term=0))
-                logging.info(f"Connected to {other_server} with response: {response}")
-                print('Connected to', other_server)
+                logging.info(f"[SETUP] Connected to {other_server} with response: {response}")
                 # close channel
                 channel.close()
                 break
             except Exception as e:
-                logging.error(f"Error connecting to {server}: {e}")
+                logging.error(f"[SETUP] Error connecting to {server}: {e}")
                 time.sleep(1)
 
-    logging.info(f"Server started on port {port}")
+    logging.info(f"[SETUP] Server started on port {port}")
+    # wait for random time from 1 to 5 seconds before starting
+    time.sleep(random.randint(1, 5))
     try:
         while True:
-            time.sleep(86400)
+            act()
     except KeyboardInterrupt:
         server.stop(0)
 

@@ -14,6 +14,7 @@ enum Action {
   DELETE_MESSAGE = 8;
   DELETE_ACCOUNT = 9;
   PING_USER = 10;
+  CONNECT = 11;
 
 }
 

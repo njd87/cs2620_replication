@@ -30,3 +30,24 @@ Added raft.proto (for real this time) that has one service and 3 main functions:
     One for voting (between raft)
     One for entries (heartbeats, replication)
     One for getleader (for client to get leader in case of leader crash)
+
+Servers now wait until all other servers are online before proceeding.
+
+03/24/25
+
+Changed chat.proto today to include a new action "Connect" so that when clients connect to leader,
+the leader can know they are online.
+This should help deal with the issue of leader dying and connected users being lost.
+
+For now, we can't write unit test just yet, since there are still some bugs in the leader election.
+Once we get the leader election up and running, we can begin writing some unit tests.
+
+Ok, election now functions properly. We had to add a timer to the code such that each server will wait a certain amount of time
+before trying to run for candidate. Once a server is a candidate, it sends vote requests from everyone and continues if it has 3 votes.
+
+Client also now requests new leader via iteration after server fails. As of right now, it retries 6 times (to allow time to elect new leader).
+This seems to be working well, but databases are not consistent yet. Need to add a new file called "replica_helpers" specifically for this action,
+since we just want to change the databases and nothing else. A lot of this code will be based on the Chat service, but it will be different in how it
+interacts with the client (that is, it won't be interacting with the client at all!)
+
+The client also shuts down connections if it fails to find any server after 6 retries (just so it is not perpetually trying to connect to a socket).
