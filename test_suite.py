@@ -13,22 +13,26 @@ from test_server import handle_requests, TestServer
 
 unittest.TestLoader.sortTestMethodsUsing = None
 
+
 class TestDatabaseSetup(unittest.TestCase):
-    '''
+    """
     Tests "setup.py" file for resetting and structuring the database.
 
     Tests the following functions:
     - reset_database
     - structure_tables
-    '''
+    """
+
     def test_reset_database(self):
-        reset_database([
-            "data/r1/test_messenger.db",
-            "data/r2/test_messenger.db",
-            "data/r3/test_messenger.db",
-            "data/r4/test_messenger.db",
-            "data/r5/test_messenger.db"
-        ])
+        reset_database(
+            [
+                "data/r1/test_messenger.db",
+                "data/r2/test_messenger.db",
+                "data/r3/test_messenger.db",
+                "data/r4/test_messenger.db",
+                "data/r5/test_messenger.db",
+            ]
+        )
 
         self.assertFalse(os.path.exists("data/r1/test_messenger.db"))
         self.assertFalse(os.path.exists("data/r2/test_messenger.db"))
@@ -41,9 +45,13 @@ class TestDatabaseSetup(unittest.TestCase):
         structure_tables("data/r1/test_messenger.db")
         conn = sqlite3.connect("data/r1/test_messenger.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='users';"
+        )
         self.assertIsNotNone(cursor.fetchone())
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='messages';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='messages';"
+        )
         self.assertIsNotNone(cursor.fetchone())
         conn.commit()
         conn.close()
@@ -51,9 +59,13 @@ class TestDatabaseSetup(unittest.TestCase):
         structure_tables("data/r2/test_messenger.db")
         conn = sqlite3.connect("data/r2/test_messenger.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='users';"
+        )
         self.assertIsNotNone(cursor.fetchone())
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='messages';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='messages';"
+        )
         self.assertIsNotNone(cursor.fetchone())
         conn.commit()
         conn.close()
@@ -61,9 +73,13 @@ class TestDatabaseSetup(unittest.TestCase):
         structure_tables("data/r3/test_messenger.db")
         conn = sqlite3.connect("data/r3/test_messenger.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='users';"
+        )
         self.assertIsNotNone(cursor.fetchone())
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='messages';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='messages';"
+        )
         self.assertIsNotNone(cursor.fetchone())
         conn.commit()
         conn.close()
@@ -71,9 +87,13 @@ class TestDatabaseSetup(unittest.TestCase):
         structure_tables("data/r4/test_messenger.db")
         conn = sqlite3.connect("data/r4/test_messenger.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='users';"
+        )
         self.assertIsNotNone(cursor.fetchone())
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='messages';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='messages';"
+        )
         self.assertIsNotNone(cursor.fetchone())
         conn.commit()
         conn.close()
@@ -81,18 +101,23 @@ class TestDatabaseSetup(unittest.TestCase):
         structure_tables("data/r5/test_messenger.db")
         conn = sqlite3.connect("data/r5/test_messenger.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='users';"
+        )
         self.assertIsNotNone(cursor.fetchone())
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='messages';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='messages';"
+        )
         self.assertIsNotNone(cursor.fetchone())
         conn.commit()
         conn.close()
 
+
 class TestServerProcessResponse(unittest.TestCase):
-    '''
+    """
     Test cases for communicating between the server and client via JSON encoding and decoding.
-    '''
-    
+    """
+
     @classmethod
     def setUpClass(cls):
         # Code to run once at the beginning of the test class
@@ -132,14 +157,14 @@ class TestServerProcessResponse(unittest.TestCase):
             "s2": cls.server2,
             "s3": cls.server3,
             "s4": cls.server4,
-            "s5": cls.server5
+            "s5": cls.server5,
         }
 
         cls.server1.servers = cls.all_servers
         cls.server2.servers = cls.all_servers
         cls.server3.servers = cls.all_servers
         cls.server4.servers = cls.all_servers
-        cls. server5.servers = cls.all_servers
+        cls.server5.servers = cls.all_servers
 
     def test1a_elect_leader(self):
         # elect server 1 as leader
@@ -147,16 +172,14 @@ class TestServerProcessResponse(unittest.TestCase):
 
         # construct AppendEntriesRequest
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
             if server != "s1":
                 response = self.all_servers[server].AppendEntries(request)
                 self.assertEqual(response.success, True)
-        
+
         # check getleader
         for server in self.all_servers:
             response = self.all_servers[server].GetLeader(raft_pb2.GetLeaderRequest())
@@ -164,8 +187,22 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test1b_register_user(self):
         # register user, check if it exists in the database
-        request = chat_pb2.ChatRequest(action=chat_pb2.REGISTER, username="foo", passhash="bar")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.REGISTER, username="foo", passhash="bar"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         self.server1.log.append(log_copy)
         # act as leader
         response = handle_requests(request, self.server1.db_path)
@@ -174,9 +211,7 @@ class TestServerProcessResponse(unittest.TestCase):
 
         # send AppendEntriesRequest to all servers
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -191,7 +226,7 @@ class TestServerProcessResponse(unittest.TestCase):
             cursor.execute("SELECT * FROM users WHERE username='foo';")
             user = cursor.fetchone()
             self.assertIsNotNone(user)
-            self.assertEqual(user[1], 'foo')
+            self.assertEqual(user[1], "foo")
             cursor.execute("SELECT COUNT(*) FROM users;")
             count = cursor.fetchone()[0]
             self.assertEqual(count, 1)
@@ -199,8 +234,22 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test1c_register_user_exists(self):
         # if user already exists, it should return False
-        request = chat_pb2.ChatRequest(action=chat_pb2.REGISTER, username="foo", passhash="bar")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.REGISTER, username="foo", passhash="bar"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
 
         # act as leader
         response = handle_requests(request, self.server1.db_path)
@@ -209,9 +258,7 @@ class TestServerProcessResponse(unittest.TestCase):
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -225,7 +272,7 @@ class TestServerProcessResponse(unittest.TestCase):
             cursor.execute("SELECT * FROM users WHERE username='foo';")
             user = cursor.fetchone()
             self.assertIsNotNone(user)
-            self.assertEqual(user[1], 'foo')
+            self.assertEqual(user[1], "foo")
             cursor.execute("SELECT COUNT(*) FROM users;")
             count = cursor.fetchone()[0]
             self.assertEqual(count, 1)
@@ -233,17 +280,29 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test1d_login_user(self):
         # login existing user, check return true
-        request = chat_pb2.ChatRequest(action=chat_pb2.LOGIN, username="foo", passhash="bar")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.LOGIN, username="foo", passhash="bar"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
 
         response = handle_requests(request, self.server1.db_path)
         self.assertEqual(response.result, True)
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -253,17 +312,29 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test1e_login_user_invalid(self):
         # login with invalid password, should return False
-        request = chat_pb2.ChatRequest(action=chat_pb2.LOGIN, username="foo", passhash="baz")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.LOGIN, username="foo", passhash="baz"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
 
         response = handle_requests(request, self.server1.db_path)
         self.assertEqual(response.result, False)
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -273,36 +344,63 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test1f_register_other(self):
         # register another user, check if it exists in the database
-        request = chat_pb2.ChatRequest(action=chat_pb2.REGISTER, username="bar", passhash="baz")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.REGISTER, username="bar", passhash="baz"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
         self.assertEqual(response.result, True)
         self.assertEqual(response.users, ["foo"])
 
         self.server1.log.append(log_copy)
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
             if server != "s1":
                 response = self.all_servers[server].AppendEntries(request)
                 self.assertEqual(response.success, True)
-    
+
     def test2a_send_message(self):
         # send message between two users, check if it exists in the database
-        request = chat_pb2.ChatRequest(action=chat_pb2.SEND_MESSAGE, sender="foo", recipient="bar", message="Hello, World!")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.SEND_MESSAGE,
+            sender="foo",
+            recipient="bar",
+            message="Hello, World!",
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
         self.assertIsNotNone(response.message_id)
 
         self.server1.log.append(log_copy)
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -313,28 +411,45 @@ class TestServerProcessResponse(unittest.TestCase):
         for server in self.all_servers:
             conn = sqlite3.connect(self.all_servers[server].db_path)
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM messages WHERE message_id=?;", (response.message_id,))
+            cursor.execute(
+                "SELECT * FROM messages WHERE message_id=?;", (response.message_id,)
+            )
             message = cursor.fetchone()
             self.assertIsNotNone(message)
-            self.assertEqual(message[1], 'foo')
-            self.assertEqual(message[2], 'bar')
-            self.assertEqual(message[3], 'Hello, World!')
+            self.assertEqual(message[1], "foo")
+            self.assertEqual(message[2], "bar")
+            self.assertEqual(message[3], "Hello, World!")
             conn.close()
 
     def test2b_send_many_msgs(self):
         # send many messages between two users, check if they exist in the database
         for i in range(1000):
-            request = chat_pb2.ChatRequest(action=chat_pb2.SEND_MESSAGE, sender="foo", recipient="bar", message=f"Message {i}")
-            log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+            request = chat_pb2.ChatRequest(
+                action=chat_pb2.SEND_MESSAGE,
+                sender="foo",
+                recipient="bar",
+                message=f"Message {i}",
+            )
+            log_copy = raft_pb2.LogEntry(
+                action=request.action,
+                username=request.username,
+                passhash=request.passhash,
+                user2=request.user2,
+                sender=request.sender,
+                recipient=request.recipient,
+                message=request.message,
+                sent_message=request.sent_message,
+                n_messages=request.n_messages,
+                message_id=request.message_id,
+                term=1,
+            )
             response = handle_requests(request, db_path=self.server1.db_path)
 
             self.assertIsNotNone(response.message_id)
 
             self.server1.log.append(log_copy)
             request = raft_pb2.AppendEntriesRequest(
-                term=1,
-                leader_address="s1",
-                entries=self.server1.log
+                term=1, leader_address="s1", entries=self.server1.log
             )
 
             for server in self.all_servers:
@@ -345,22 +460,39 @@ class TestServerProcessResponse(unittest.TestCase):
         for server in self.all_servers:
             conn = sqlite3.connect(self.all_servers[server].db_path)
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM messages WHERE sender='foo' AND recipient='bar';")
+            cursor.execute(
+                "SELECT COUNT(*) FROM messages WHERE sender='foo' AND recipient='bar';"
+            )
             count = cursor.fetchone()[0]
             self.assertEqual(count, 1001)
             conn.close()
 
     def test3a_ping(self):
         # ping user, check if message is delivered
-        request = chat_pb2.ChatRequest(action=chat_pb2.PING, sender="foo", sent_message="Hello, World!", message_id=1)
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.PING,
+            sender="foo",
+            sent_message="Hello, World!",
+            message_id=1,
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
 
         self.server1.log.append(log_copy)
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -371,25 +503,38 @@ class TestServerProcessResponse(unittest.TestCase):
         for server in self.all_servers:
             conn = sqlite3.connect(self.all_servers[server].db_path)
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM messages WHERE sender='foo' AND delivered=1;")
+            cursor.execute(
+                "SELECT COUNT(*) FROM messages WHERE sender='foo' AND delivered=1;"
+            )
             count = cursor.fetchone()[0]
             self.assertEqual(count, 1)
             conn.close()
 
     def test3b_load_chat(self):
         # load chat between two users, check if messages are returned
-        request = chat_pb2.ChatRequest(action=chat_pb2.LOAD_CHAT, username="foo", user2="bar")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.LOAD_CHAT, username="foo", user2="bar"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
         # check to make sure response.messages is not empty
         self.assertNotEqual(response.messages, [])
-        
 
         self.server1.log.append(log_copy)
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -399,17 +544,29 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test3c_load_chat_empty(self):
         # check to make sure empty chat returns no messages
-        request = chat_pb2.ChatRequest(action=chat_pb2.LOAD_CHAT, username="foo", user2="baz")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.LOAD_CHAT, username="foo", user2="baz"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
         self.assertEqual(response.messages, [])
 
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -419,15 +576,27 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test4a_view_undelivered(self):
         # view undelivered messages, check if they are returned
-        request = chat_pb2.ChatRequest(action=chat_pb2.VIEW_UNDELIVERED, username="bar", n_messages=10)
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.VIEW_UNDELIVERED, username="bar", n_messages=10
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         _ = handle_requests(request, db_path=self.server1.db_path)
 
         self.server1.log.append(log_copy)
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -438,7 +607,9 @@ class TestServerProcessResponse(unittest.TestCase):
         for server in self.all_servers:
             conn = sqlite3.connect(self.all_servers[server].db_path)
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM messages WHERE recipient='bar' AND delivered=0;")
+            cursor.execute(
+                "SELECT COUNT(*) FROM messages WHERE recipient='bar' AND delivered=0;"
+            )
             count = cursor.fetchone()[0]
             self.assertEqual(count, 0)
             conn.close()
@@ -446,15 +617,25 @@ class TestServerProcessResponse(unittest.TestCase):
     def test5a_delete_message(self):
         # delete message, check if it is removed from the database
         request = chat_pb2.ChatRequest(action=chat_pb2.DELETE_MESSAGE, message_id=1)
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         _ = handle_requests(request, db_path=self.server1.db_path)
 
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -472,8 +653,22 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test5b_delete_account_invalid_pass(self):
         # delete account with invalid password, should return False
-        request = chat_pb2.ChatRequest(action=chat_pb2.DELETE_ACCOUNT, username="foo", passhash="baz")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.DELETE_ACCOUNT, username="foo", passhash="baz"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
 
         self.assertEqual(response.result, False)
@@ -481,9 +676,7 @@ class TestServerProcessResponse(unittest.TestCase):
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -498,24 +691,38 @@ class TestServerProcessResponse(unittest.TestCase):
             count = cursor.fetchone()[0]
             self.assertEqual(count, 1)
 
-            cursor.execute("SELECT COUNT(*) FROM messages WHERE sender='foo' OR recipient='foo';")
+            cursor.execute(
+                "SELECT COUNT(*) FROM messages WHERE sender='foo' OR recipient='foo';"
+            )
             count = cursor.fetchone()[0]
             self.assertNotEqual(count, 0)
             conn.close()
 
     def test5c_delete_account_invalid_user(self):
         # delete account with invalid username, should return False
-        request = chat_pb2.ChatRequest(action=chat_pb2.DELETE_ACCOUNT, username="baz", passhash="bar")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.DELETE_ACCOUNT, username="baz", passhash="bar"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
         self.assertEqual(response.result, False)
 
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -533,17 +740,29 @@ class TestServerProcessResponse(unittest.TestCase):
 
     def test5d_delete_account(self):
         # delete account, check if it is removed from the database
-        request = chat_pb2.ChatRequest(action=chat_pb2.DELETE_ACCOUNT, username="foo", passhash="bar")
-        log_copy = raft_pb2.LogEntry(action=request.action, username=request.username, passhash=request.passhash, user2=request.user2, sender=request.sender, recipient=request.recipient, message=request.message, sent_message=request.sent_message, n_messages=request.n_messages, message_id=request.message_id, term=1)
+        request = chat_pb2.ChatRequest(
+            action=chat_pb2.DELETE_ACCOUNT, username="foo", passhash="bar"
+        )
+        log_copy = raft_pb2.LogEntry(
+            action=request.action,
+            username=request.username,
+            passhash=request.passhash,
+            user2=request.user2,
+            sender=request.sender,
+            recipient=request.recipient,
+            message=request.message,
+            sent_message=request.sent_message,
+            n_messages=request.n_messages,
+            message_id=request.message_id,
+            term=1,
+        )
         response = handle_requests(request, db_path=self.server1.db_path)
         self.assertEqual(response.result, True)
 
         self.server1.log.append(log_copy)
 
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
@@ -558,7 +777,9 @@ class TestServerProcessResponse(unittest.TestCase):
             count = cursor.fetchone()[0]
             self.assertEqual(count, 0)
 
-            cursor.execute("SELECT COUNT(*) FROM messages WHERE sender='foo' OR recipient='foo';")
+            cursor.execute(
+                "SELECT COUNT(*) FROM messages WHERE sender='foo' OR recipient='foo';"
+            )
             count = cursor.fetchone()[0]
             self.assertEqual(count, 0)
             conn.close()
@@ -566,6 +787,7 @@ class TestServerProcessResponse(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 
 class TestServerCrashes(unittest.TestCase):
     @classmethod
@@ -581,14 +803,14 @@ class TestServerCrashes(unittest.TestCase):
             "s2": cls.server2,
             "s3": cls.server3,
             "s4": cls.server4,
-            "s5": cls.server5
+            "s5": cls.server5,
         }
 
         cls.server1.servers = cls.all_servers
         cls.server2.servers = cls.all_servers
         cls.server3.servers = cls.all_servers
         cls.server4.servers = cls.all_servers
-        cls. server5.servers = cls.all_servers
+        cls.server5.servers = cls.all_servers
 
     def test1a_elect_leader(self):
         # elect server 1 as leader
@@ -596,16 +818,14 @@ class TestServerCrashes(unittest.TestCase):
 
         # construct AppendEntriesRequest
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s1",
-            entries=self.server1.log
+            term=1, leader_address="s1", entries=self.server1.log
         )
 
         for server in self.all_servers:
             if server != "s1":
                 response = self.all_servers[server].AppendEntries(request)
                 self.assertEqual(response.success, True)
-        
+
         # check getleader
         for server in self.all_servers:
             response = self.all_servers[server].GetLeader(raft_pb2.GetLeaderRequest())
@@ -618,19 +838,18 @@ class TestServerCrashes(unittest.TestCase):
 
         # construct AppendEntriesRequest
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s2",
-            entries=self.server1.log
+            term=1, leader_address="s2", entries=self.server1.log
         )
 
         for server in self.all_servers:
             if server != "s2":
                 response = self.all_servers[server].AppendEntries(request)
-        
+
         # check getleader
         for server in self.all_servers:
             response = self.all_servers[server].GetLeader(raft_pb2.GetLeaderRequest())
             self.assertEqual(response.leader_address, "s2")
+
     def test1b_elect_leader_twice_crash(self):
         # elect server 1 as leader
         self.server2.Crash()
@@ -638,19 +857,18 @@ class TestServerCrashes(unittest.TestCase):
 
         # construct AppendEntriesRequest
         request = raft_pb2.AppendEntriesRequest(
-            term=1,
-            leader_address="s3",
-            entries=self.server1.log
+            term=1, leader_address="s3", entries=self.server1.log
         )
 
         for server in self.all_servers:
             if server != "s3":
                 response = self.all_servers[server].AppendEntries(request)
-        
+
         # check getleader
         for server in self.all_servers:
             response = self.all_servers[server].GetLeader(raft_pb2.GetLeaderRequest())
             self.assertEqual(response.leader_address, "s3")
+
     def test1b_elect_leader_thrice_crash(self):
         # elect server 1 as leader
         self.server3.Crash()

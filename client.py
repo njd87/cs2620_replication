@@ -13,6 +13,7 @@ import chat_pb2_grpc
 import chat_pb2
 import raft_pb2_grpc
 import raft_pb2
+
 # log to a file
 log_file = "logs/client.log"
 
@@ -34,8 +35,7 @@ with open("config/config.json") as f:
 
 # get names of all servers
 all_servers = [
-    f"{config['servers']['hosts'][i]}:{config['servers']['ports'][i]}"
-    for i in range(5)
+    f"{config['servers']['hosts'][i]}:{config['servers']['ports'][i]}" for i in range(5)
 ]
 
 # A thread-safe queue for outgoing ChatRequests.
@@ -78,7 +78,7 @@ class ClientUI:
         self.root = tk.Tk()
         self.root.title("Messenger")
         self.root.geometry("800x600")
-        
+
         self.credentials = None
         self.leader_address = None
         self.check_for_leader()
@@ -114,7 +114,7 @@ class ClientUI:
         try:
             responses = self.stub.Chat(request_generator())
             for resp in responses:
-                logging.info(f'Size of response: {sys.getsizeof(resp)}')
+                logging.info(f"Size of response: {sys.getsizeof(resp)}")
                 action = resp.action
                 if action == chat_pb2.CHECK_USERNAME:
                     # destroy current screen
@@ -248,19 +248,18 @@ class ClientUI:
         except grpc.RpcError as e:
             logging.error(f"Error receiving response: {e}")
             self.check_for_leader()
-        
-    
-    def continue_check_for_leader(self):
-        while True:
-            self.check_for_leader()
-            time.sleep(3)
-    
+
     def check_for_leader(self, retries=6):
+        '''
+        Check for the leader of the servers.
+        Retries 6 times by default.
+        '''
         logging.info("Checking for leader...")
         time.sleep(5)
         # we want to make sure that we are connected to the leader
         # if we are not connected OR we had errors in connecting to the leader
         # we need to ask replicas for new leader
+        no_leader = True
         previous_leader = self.leader_address
         for server in all_servers:
             try:
@@ -268,13 +267,17 @@ class ClientUI:
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
                 response = stub.GetLeader(raft_pb2.GetLeaderRequest(useless=True))
                 if response.leader_address:
-                    logging.info(f'Leader found: {response.leader_address}')
-                    logging.info(f'Info came from: {server}')
+                    logging.info(f"Leader found: {response.leader_address}")
+                    logging.info(f"Info came from: {server}")
                     self.leader_address = response.leader_address
+                    no_leader = False
                     break
             except grpc.RpcError as e:
                 logging.error(f"Error connecting to {server}: {e}")
-        
+
+        if no_leader:
+            self.check_for_leader(retries - 1)
+            return
         if self.leader_address != previous_leader:
             # new leader
             try:
@@ -284,7 +287,9 @@ class ClientUI:
                 pass
             self.channel = grpc.insecure_channel(self.leader_address)
             self.stub = chat_pb2_grpc.ChatServiceStub(self.channel)
-            self.request_thread = threading.Thread(target=self.handle_responses, daemon=True)
+            self.request_thread = threading.Thread(
+                target=self.handle_responses, daemon=True
+            )
             self.request_thread.start()
             time.sleep(1)
             # this NEEDS to happen twice due to multiple threads
@@ -292,13 +297,10 @@ class ClientUI:
             self.send_connect_request()
 
     def send_connect_request(self):
-        """
-        
-        """
+        """ """
         # create a request
         request = chat_pb2.ChatRequest(
-            action=chat_pb2.CONNECT,
-            username=self.credentials
+            action=chat_pb2.CONNECT, username=self.credentials
         )
 
         outgoing_queue.put(request)

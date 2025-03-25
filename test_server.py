@@ -4,10 +4,12 @@ import raft_pb2
 import hashlib
 from replica_helpers import replicate_action
 
+
 class TestServer:
-    '''
+    """
     Test server to simulate raft server
-    '''
+    """
+
     def __init__(self, name, db_path):
         self.leader = None
         self.name = name
@@ -17,7 +19,6 @@ class TestServer:
         self.log = []
         self.online = True
 
-
     def Crash(self):
         self.online = False
 
@@ -26,6 +27,7 @@ class TestServer:
         if self.voted_for is not None or not self.online:
             return raft_pb2.VoteResponse(term=1, vote_granted=False)
         return raft_pb2.VoteResponse(term=1, vote_granted=True)
+
     def AppendEntries(self, req):
         if not self.online:
             return raft_pb2.AppendEntriesResponse(term=1, success=False)
@@ -36,7 +38,7 @@ class TestServer:
 
         # look for new entires
         try:
-            new_entries = req.entries[len(self.log):]
+            new_entries = req.entries[len(self.log) :]
             for entry in new_entries:
                 # add to log and replicate action
                 self.log.append(entry)
@@ -45,19 +47,16 @@ class TestServer:
         except Exception as e:
             print(f"Error: {e}")
 
-        response = raft_pb2.AppendEntriesResponse(
-            term=req.term,
-            success=True
-        )
+        response = raft_pb2.AppendEntriesResponse(term=req.term, success=True)
         return response
-    
+
     def GetLeader(self, req):
         return raft_pb2.GetLeaderResponse(leader_address=self.leader)
-    
+
     def run_for_leader(self):
-        '''
+        """
         Run for leader
-        '''
+        """
         total_servers = len(self.servers)
         votes = 0
 
@@ -71,15 +70,14 @@ class TestServer:
             self.leader = self.name
             return True
 
+
 def handle_requests(req, db_path, username=None):
     if req.action == chat_pb2.CHECK_USERNAME:
         # check if username is already in use
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
-        sqlcur.execute(
-            "SELECT * FROM users WHERE username=?", (req.username,)
-        )
+        sqlcur.execute("SELECT * FROM users WHERE username=?", (req.username,))
 
         # if username is already in use, send response with result=False
         # otherwise, send response with result=True
@@ -135,9 +133,7 @@ def handle_requests(req, db_path, username=None):
         sqlcur = sqlcon.cursor()
 
         # check to make sure username is not already in use
-        sqlcur.execute(
-            "SELECT * FROM users WHERE username=?", (req.username,)
-        )
+        sqlcur.execute("SELECT * FROM users WHERE username=?", (req.username,))
         if sqlcur.fetchone():
             sqlcon.close()
             return chat_pb2.ChatResponse(action=chat_pb2.REGISTER, result=False)
@@ -190,7 +186,9 @@ def handle_requests(req, db_path, username=None):
                 )
             )
         sqlcon.close()
-        return chat_pb2.ChatResponse(action=chat_pb2.LOAD_CHAT, messages=formatted_messages)
+        return chat_pb2.ChatResponse(
+            action=chat_pb2.LOAD_CHAT, messages=formatted_messages
+        )
 
     elif req.action == chat_pb2.SEND_MESSAGE:
         sender = req.sender
@@ -279,21 +277,22 @@ def handle_requests(req, db_path, username=None):
         )
         sqlcon.commit()
         sqlcon.close()
-        return chat_pb2.ChatResponse(action=chat_pb2.VIEW_UNDELIVERED, messages=messages_formatted)
+        return chat_pb2.ChatResponse(
+            action=chat_pb2.VIEW_UNDELIVERED, messages=messages_formatted
+        )
 
     elif req.action == chat_pb2.DELETE_MESSAGE:
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
         message_id = req.message_id
-        sqlcur.execute(
-            "DELETE FROM messages WHERE message_id=?", (message_id,)
-        )
+        sqlcur.execute("DELETE FROM messages WHERE message_id=?", (message_id,))
         sqlcon.commit()
         sqlcon.close()
 
-        response = chat_pb2.ChatResponse(action=chat_pb2.DELETE_MESSAGE, message_id=message_id)
-
+        response = chat_pb2.ChatResponse(
+            action=chat_pb2.DELETE_MESSAGE, message_id=message_id
+        )
 
         return response
 
@@ -305,31 +304,30 @@ def handle_requests(req, db_path, username=None):
         passhash = req.passhash
 
         passhash = hashlib.sha256(passhash.encode()).hexdigest()
-        sqlcur.execute(
-            "SELECT passhash FROM users WHERE username=?", (username,)
-        )
+        sqlcur.execute("SELECT passhash FROM users WHERE username=?", (username,))
 
         result = sqlcur.fetchone()
         if result:
             # username exists and passhash matches
             if result[0] == passhash:
-                sqlcur.execute(
-                    "DELETE FROM users WHERE username=?", (username,)
-                )
+                sqlcur.execute("DELETE FROM users WHERE username=?", (username,))
                 sqlcur.execute(
                     "DELETE FROM messages WHERE sender=? OR recipient=?",
                     (username, username),
                 )
                 sqlcon.commit()
 
-                response = chat_pb2.ChatResponse(action=chat_pb2.DELETE_ACCOUNT, result=True)
-
+                response = chat_pb2.ChatResponse(
+                    action=chat_pb2.DELETE_ACCOUNT, result=True
+                )
 
                 sqlcon.close()
                 return response
             else:
                 sqlcon.close()
-                return chat_pb2.ChatResponse(action=chat_pb2.DELETE_ACCOUNT, result=False)
+                return chat_pb2.ChatResponse(
+                    action=chat_pb2.DELETE_ACCOUNT, result=False
+                )
         else:
             sqlcon.close()
             return chat_pb2.ChatResponse(action=chat_pb2.DELETE_ACCOUNT, result=False)
