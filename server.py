@@ -17,6 +17,7 @@ import raft_pb2_grpc
 import raft_pb2
 import json
 import traceback
+from replica_helpers import replicate_action
 
 if len(sys.argv) != 2:
     logging.error("Usage: python server.py <server_index>")
@@ -82,6 +83,7 @@ rec_votes = 0
 num_servers = len(all_servers) + 1
 # timer for election timeout
 timer = random.randint(1, 5)
+commit = 0
 
 
 class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
@@ -109,11 +111,15 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
 
         # handle incoming requests
         def handle_requests():
+            global log, current_term
             nonlocal username
             try:
                 for req in request_iterator:
+                    print('Received request:', req)
                     # print size of req in bytes
                     logging.info(f"[CHAT] Size of request: {sys.getsizeof(req)} bytes")
+                    log_copy = raft_pb2.LogEntry(action=req.action, username=req.username, passhash=req.passhash, user2=req.user2, sender=req.sender, recipient=req.recipient, message=req.message, sent_message=req.sent_message, n_messages=req.n_messages, message_id=req.message_id, term=current_term)
+                    log.append(log_copy)
 
                     if req.action == chat_pb2.CHECK_USERNAME:
                         # check if username is already in use
@@ -229,8 +235,6 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon.close()
 
                         # add user to clients
-                        print('Pinging all users')
-                        print(f'Online users: {clients.keys()}')
                         username = req.username
                         clients[username] = client_queue
 
@@ -490,11 +494,13 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                     elif req.action == chat_pb2.CONNECT:
                         # a new leader was chosen, client connected to new leader
                         # add the user to the clients if they are signed in
+                        print("New user:", req.username)
                         if (req.username != "") and (req.username not in clients):
                             clients[req.username] = client_queue
                     else:
                         logging.error(f"[CHAT] Invalid action: {req.action}")
             except Exception as e:
+                print("WHOOPS CONNECT")
                 tb = traceback.extract_tb(e.__traceback__)
                 line_number = tb[-1].lineno if tb else "unknown"
                 logging.error(
@@ -532,7 +538,7 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
                      f"last_log_index={request.last_log_index}, last_log_term={request.last_log_term}")
         
         # if the candidate's term is less than the current term, reject the vote
-        if request.term < current_term:
+        if (request.term < current_term) or (voted_for is None):
             response = raft_pb2.VoteResponse(
                 term=current_term,
                 vote_granted=False
@@ -547,28 +553,56 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
                 term=current_term,
                 vote_granted=True
             )
+            leader_address = None
             return response
 
     def AppendEntries(self, request, context):
         """
         Handles AppendEntriesRequest RPC.
         """
-        global timer, log, current_term, leader_address, raft_state
+        global timer, log, current_term, leader_address, raft_state, commit, db_path, voted_for
         logging.info(f"[RAFT] Received AppendEntriesRequest: term={request.term}, leader_address={request.leader_address}, "
-                     f"prev_log_index={request.prev_log_index}, prev_log_term={request.prev_log_term}, "
+                     f"most_recent_log_idx={request.most_recent_log_idx}, term_of_recent_log={request.term_of_recent_log}, "
                      f"leader_commit={request.leader_commit}")
-        # Iterate over the log entries in the request and log them. If length of log is greater than our log, append
-        new_entries = request.entries[len(log):]
-        for entry in new_entries:
-            log.append(entry)
-            '''
-            TODO: act with entries
-            '''
-
+        voted_for = None
         # update timer
-        timer = time.time() + random.uniform(3, 5)
+        timer = time.time() + random.uniform(0.3, 0.5)
+
+        if raft_state == "LEADER":
+            print("I have lost majority")
         raft_state = "FOLLOWER"
 
+        if leader_address != request.leader_address:
+            print("new leader:", request.leader_address)
+            leader_address = request.leader_address
+            
+        # check if the leader's term is less than the current term
+        # or if the leader's term is equal to the current term but the leader is not the current leader
+        # return bad response
+        # if request.term < current_term or (request.term == current_term and request.leader_address != leader_address):
+        #     print(f'Term disagreement: {request.term < current_term}')
+        #     print(f'Leader disagreement: saw {request.leader_address}, expected {leader_address}')
+        #     response = raft_pb2.AppendEntriesResponse(
+        #         term=current_term,
+        #         success=False
+        #     )
+        #     return response
+        
+         # check if no new entries
+        # if so, just return current term
+        if len(log) - 1 == request.most_recent_log_idx:
+            response = raft_pb2.AppendEntriesResponse(
+                term=current_term,
+                success=True
+            )
+            return response
+        
+        new_entries = request.entries[request.leader_commit + 1:]
+
+        for entry in new_entries:
+            # add to log and replicate action
+            log.append(entry)
+            replicate_action(entry, db_path)
 
         response = raft_pb2.AppendEntriesResponse(
             term=request.term,
@@ -577,17 +611,19 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
         return response
     
     def GetLeader(self, request, context):
+        global leader_address
         return raft_pb2.GetLeaderResponse(leader_address=leader_address)
     
 # act defines how each server should act
 def act():
-    global raft_state, current_term, voted_for, log, leader_address, timer, rec_votes
+    global raft_state, current_term, voted_for, log, leader_address, timer, rec_votes, commit
     current_time = time.time()
 
     # check to see if we need to change state
     if raft_state == "FOLLOWER":
         # no heartbeat, become candidate
         if current_time >= timer:
+            print("Didn't hear from leader, becoming candidate")
             raft_state = "CANDIDATE"
             current_term += 1
             # timer = current_time + random.uniform(3, 5)
@@ -620,9 +656,12 @@ def act():
                 raft_state = "LEADER"
                 leader_address = f"{host}:{port}"
                 logging.info(f"[RAFT] Server {idx} elected as leader for term {current_term}.")
-        # In a complete implementation, here the candidate would send out vote requests.
+            else:
+                print("Didn't win election")
+                logging.info(f"[RAFT] Server {idx} did not win election for term {current_term}.")
     elif raft_state == "LEADER":
-        # As leader, send periodic heartbeats (AppendEntries with no new entries) to all followers.
+        # send out heartbeats to all other servers
+        successes = 0
         for other_server in all_servers:
             try:
                 channel = grpc.insecure_channel(other_server)
@@ -631,17 +670,24 @@ def act():
                 response = stub.AppendEntries(raft_pb2.AppendEntriesRequest(
                     term=current_term,
                     leader_address=leader_address,
-                    prev_log_index=len(log) - 1,
-                    prev_log_term=log[-1].term if log else 0,
-                    entries=[],  # heartbeat: no new log entries
-                    leader_commit=0
+                    most_recent_log_idx=len(log) - 1,
+                    term_of_recent_log=log[-1].term if log else 0,
+                    entries=log,
+                    leader_commit=commit
                 ))
+                successes += response.success
                 logging.info(f"[RAFT] Sent heartbeat to {other_server} with response: {response}")
                 channel.close()
             except Exception as e:
                 logging.error(f"[RAFT] Error sending heartbeat to {other_server}: {e}")
         # Set the next heartbeat timeout (e.g., 1 second later)
-        timer = current_time + 1
+        if successes < num_servers // 2:
+            print("STEPPING DOWN")
+            logging.info(f"[RAFT] Leader {idx} lost majority. Stepping down.")
+            raft_state = "FOLLOWER"
+            leader_address = None
+        else:
+            commit = len(log) - 1
     else:
         logging.error(f"[RAFT] Invalid state: {raft_state}")
 

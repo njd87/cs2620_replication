@@ -28,9 +28,11 @@ message VoteResponse {
 message AppendEntriesRequest {
     int32 term = 1;
     string leader_address = 2;
-    int32 prev_log_index = 3;
-    int32 prev_log_term = 4;
+    // last log index
+    int32 most_recent_log_idx = 3;
+    int32 term_of_recent_log = 4;
     repeated LogEntry entries = 5;
+    // last "committed" index expected from the followers
     int32 leader_commit = 6;
 }
 
@@ -52,6 +54,7 @@ enum Action {
     DELETE_MESSAGE = 8;
     DELETE_ACCOUNT = 9;
     PING_USER = 10;
+    CONNECT = 11;
   
   }
 
@@ -79,8 +82,6 @@ int32 message_id = 10;
 
 // also include term number, index, and is_heartbeat for raft
 int32 term = 11;
-int32 index = 12;
-bool is_heartbeat = 13;
 }
 
 // for clients, get leader

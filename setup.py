@@ -58,6 +58,26 @@ def structure_tables(data_path="data/messenger.db") -> None:
         print(f"Created messages table.")
 
 
+def print_db(data_path="data/messenger.db") -> None:
+    """
+    Print the contents of the database.
+    """
+
+    with sqlite3.connect(data_path) as conn:
+        cursor = conn.cursor()
+
+        # print users table
+        cursor.execute("SELECT * FROM users")
+        print("Users Table")
+        for row in cursor.fetchall():
+            print(row)
+
+        # print messages table
+        cursor.execute("SELECT * FROM messages")
+        print("Messages Table")
+        for row in cursor.fetchall():
+            print(row)
+
 if __name__ == "__main__":
     reset_database([
         "data/r1/messenger.db",
@@ -72,3 +92,9 @@ if __name__ == "__main__":
     structure_tables("data/r3/messenger.db")
     structure_tables("data/r4/messenger.db")
     structure_tables("data/r5/messenger.db")
+
+    # print_db("data/r1/messenger.db")
+    # print_db("data/r2/messenger.db")
+    # print_db("data/r3/messenger.db")
+    # print_db("data/r4/messenger.db")
+    # print_db("data/r5/messenger.db")

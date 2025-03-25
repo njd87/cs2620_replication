@@ -81,11 +81,8 @@ class ClientUI:
         
         self.credentials = None
         self.leader_address = None
-        self.check_for_leader()
-
-        # start connection
-        # Start a background thread to process server responses.
-        threading.Thread(target=self.handle_responses, daemon=True).start()
+        self.leader_check_thread = threading.Thread(target=self.continue_check_for_leader, daemon=True)
+        self.leader_check_thread.start()
 
         # setup first screen
         self.setup_user_entry()
@@ -250,16 +247,26 @@ class ClientUI:
                         self.users.append(pinging_user)
                         self.rerender_users()
         except grpc.RpcError as e:
+            print("I KNOW SERVER IS DOWN")
             logging.error(f"Error receiving response: {e}")
+        
+    
+    def continue_check_for_leader(self):
+        while True:
             self.check_for_leader()
+            time.sleep(3)
     
     def check_for_leader(self, retries=6):
+        try:
+            self.request_thread.join()
+        except:
+            pass
         print('leader not found. checking for new leader...')
-        time.sleep(1)
-        self.leader_address = None
+        time.sleep(5)
         # we want to make sure that we are connected to the leader
         # if we are not connected OR we had errors in connecting to the leader
         # we need to ask replicas for new leader
+        previous_leader = self.leader_address
         for server in all_servers:
             try:
                 channel = grpc.insecure_channel(server)
@@ -267,24 +274,26 @@ class ClientUI:
                 response = stub.GetLeader(raft_pb2.GetLeaderRequest(useless=True))
                 if response.leader_address:
                     print('Leader found:', response.leader_address)
+                    print('Info came from:', server)
                     self.leader_address = response.leader_address
                     break
             except grpc.RpcError as e:
                 logging.error(f"Error connecting to {server}: {e}")
-        if not self.leader_address:
-            if retries <= 0:
-                logging.error("Unable to connect to any server.")
-                sys.exit(1)
-            logging.error(f"Unable to connect to any server. Retries left: {retries}")
-            self.check_for_leader(retries - 1)
-
-
-
-        self.channel = grpc.insecure_channel(self.leader_address)
-        self.stub = chat_pb2_grpc.ChatServiceStub(self.channel)
-
-        # send connect message to leader
-        self.send_connect_request()
+        
+        if self.leader_address != previous_leader:
+            # new leader
+            try:
+                self.request_thread.join()
+                self.channel.close()
+            except:
+                pass
+            self.channel = grpc.insecure_channel(self.leader_address)
+            self.stub = chat_pb2_grpc.ChatServiceStub(self.channel)
+            self.request_thread = threading.Thread(target=self.handle_responses, daemon=True)
+            self.request_thread.start()
+            time.sleep(1)
+            self.send_connect_request()
+            self.send_connect_request()
 
     def send_connect_request(self):
         """
@@ -296,6 +305,7 @@ class ClientUI:
             username=self.credentials
         )
 
+        print(f"TELLING {self.leader_address} TO CONNECT")
         outgoing_queue.put(request)
 
     def reset_login_vars(self):
