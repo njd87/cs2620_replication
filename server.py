@@ -61,7 +61,7 @@ except KeyError as e:
 
 """
 The following are parameters that the server
-needs to keep constant
+needs to keep consistent for Raft
 """
 # map of clients to queues for sending responses
 clients = {}
@@ -538,14 +538,18 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
 
 class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
     """
-    RaftServiceServicer class for RaftServiceServicer
-
-    TODO: write description
+    RaftServiceServicer class that allows servers to communicate with each other for deciding
+    leader and replicating logs. All log messages in this service begin with [RAFT].
     """
 
     def Vote(self, request, context):
         """
         Handles VoteRequest RPC.
+
+        Parameters:
+        ----------
+        request : raft_pb2.VoteRequest
+            request object from client
         """
         global current_term, voted_for
 
@@ -570,6 +574,12 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
     def AppendEntries(self, request, context):
         """
         Handles AppendEntriesRequest RPC.
+        Replicates log entries and updates the leader.
+
+        Parameters:
+        ----------
+        request : raft_pb2.AppendEntriesRequest
+            request object from client
         """
         global timer, log, current_term, leader_address, raft_state, commit, db_path, voted_for
         logging.info(
@@ -591,17 +601,10 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
             )
             leader_address = request.leader_address
 
-        # check if the leader's term is less than the current term
-        # or if the leader's term is equal to the current term but the leader is not the current leader
-        # return bad response
-        # if request.term < current_term or (request.term == current_term and request.leader_address != leader_address):
-        #     print(f'Term disagreement: {request.term < current_term}')
-        #     print(f'Leader disagreement: saw {request.leader_address}, expected {leader_address}')
-        #     response = raft_pb2.AppendEntriesResponse(
-        #         term=current_term,
-        #         success=False
-        #     )
-        #     return response
+        # if outdated term, don't accept
+        if request.term < current_term:
+            response = raft_pb2.AppendEntriesResponse(term=current_term, success=False)
+            return response
 
         # check if no new entries
         # if so, just return current term
@@ -620,12 +623,34 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
         return response
 
     def GetLeader(self, request, context):
+        '''
+        Returns the leader address.
+
+        Used by clients to determine the leader.
+        '''
         global leader_address
         return raft_pb2.GetLeaderResponse(leader_address=leader_address)
 
 
 # act defines how each server should act
 def act():
+    '''
+    This is where all the action of RAFT takes place.
+
+    This function is called in a loop by the server to check the state of the server and
+    do the necessary actions based on the state.
+
+    If follower:
+    - Check if the server has received a heartbeat from the leader.
+    - If so, become a candidate.
+    If candidate:
+    - Start a new election round.
+    - Send vote requests to all other servers.
+    - If majority votes received, become leader.
+    If leader:
+    - Send heartbeats to all other servers.
+    - If majority of servers do not respond, step down as leader.
+    '''
     global raft_state, current_term, voted_for, log, leader_address, timer, rec_votes, commit
     current_time = time.time()
 
@@ -687,7 +712,7 @@ def act():
             try:
                 channel = grpc.insecure_channel(other_server)
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
-                # For a heartbeat, it’s typical to send an empty list of entries.
+                # send out all logs
                 response = stub.AppendEntries(
                     raft_pb2.AppendEntriesRequest(
                         term=current_term,
@@ -715,6 +740,7 @@ def act():
     else:
         logging.error(f"[RAFT] Invalid state: {raft_state}")
 
+    # 0.1 second downtime between each act
     time.sleep(0.1)
 
 
@@ -734,7 +760,6 @@ def serve():
         while True:
             try:
                 channel = grpc.insecure_channel(other_server)
-                # grpc.channel_ready_future(channel).result(timeout=0.5)
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
                 response = stub.Vote(
                     raft_pb2.VoteRequest(
@@ -752,8 +777,8 @@ def serve():
                 time.sleep(1)
 
     logging.info(f"[SETUP] Server started on port {port}")
-    # wait for random time from 1 to 5 seconds before starting
-    time.sleep(random.randint(1, 5))
+    # wait for random time from 1 to 5 seconds before starting, to allow one server to become leader
+    time.sleep(random.random(1, 5))
     try:
         while True:
             act()

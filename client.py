@@ -297,7 +297,9 @@ class ClientUI:
             self.send_connect_request()
 
     def send_connect_request(self):
-        """ """
+        """
+        When a new leader is found, send a connect request to the server.
+        """
         # create a request
         request = chat_pb2.ChatRequest(
             action=chat_pb2.CONNECT, username=self.credentials
