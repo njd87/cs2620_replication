@@ -254,6 +254,9 @@ class ClientUI:
         Check for the leader of the servers.
         Retries 6 times by default.
         '''
+        if retries <= 0:
+            logging.error("Could not find leader.")
+            sys.exit(1)
         logging.info("Checking for leader...")
         time.sleep(5)
         # we want to make sure that we are connected to the leader

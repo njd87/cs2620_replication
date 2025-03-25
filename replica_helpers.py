@@ -8,6 +8,12 @@ import grpc
 def replicate_action(req, db_path):
     """
     Replicate the action to the database
+
+    Parameters:
+    - req:
+        the request to replicate
+    - db_path:
+        the path to the database
     """
     if req.action == raft_pb2.REGISTER:
         sqlcon = sqlite3.connect(db_path)
@@ -114,10 +120,17 @@ def replicate_action(req, db_path):
                 )
                 sqlcon.commit()
 
-
-            # check to make sure user is deleted
-            s = sqlcur.execute(
-                "SELECT * FROM users WHERE username=?", (username,)
-            )
-
         sqlcon.close()
+    elif req.action == raft_pb2.CONNECT:
+        # a new leader was chosen, client connected to new leader
+        # add the user to the clients if they are signed in
+        if (req.username != ""):
+            # update all messages recipient to delivered
+            sqlcon = sqlite3.connect(db_path)
+            sqlcur = sqlcon.cursor()
+            sqlcur.execute(
+                "UPDATE messages SET delivered=1 WHERE recipient=?",
+                (req.username,),
+            )
+            sqlcon.commit()
+            sqlcon.close()

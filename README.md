@@ -1,25 +1,32 @@
 # How to Start
+Python version required: >= 3.11
+
+First, run:
+
+```console
+python setup.py
+```
 
 Run all 5 servers in 5 terminals:
 
 ```console
-python3 server.py 0
+python server.py 0
 ```
 
 ```console
-python3 server.py 1
+python server.py 1
 ```
 
 ```console
-python3 server.py 2
+python server.py 2
 ```
 
 ```console
-python3 server.py 3
+python server.py 3
 ```
 
 ```console
-python3 server.py 4
+python server.py 4
 ```
 
 The indices correspond to the hosts and ports in config.
@@ -27,7 +34,7 @@ The indices correspond to the hosts and ports in config.
 Running a client is simple:
 
 ```console
-python3 client.py
+python client.py
 ``` 
 
 It will automatically connect and find new leader whenever needed. Feel free to change host and port numbers.

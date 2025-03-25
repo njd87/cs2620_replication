@@ -1,39 +1,613 @@
-2025-03-25 11:15:02 - INFO - Checking for leader...
-2025-03-25 11:15:07 - INFO - Checking for leader...
-2025-03-25 11:15:07 - INFO - Leader found: 127.0.0.1:50003
-2025-03-25 11:15:07 - INFO - Info came from: 127.0.0.1:50005
-2025-03-25 11:15:12 - INFO - Leader found: 127.0.0.1:50003
-2025-03-25 11:15:12 - INFO - Info came from: 127.0.0.1:50005
-2025-03-25 11:15:14 - INFO - Size of response: 80
-2025-03-25 11:15:17 - INFO - Size of response: 80
-2025-03-25 11:15:17 - INFO - Size of response: 80
-2025-03-25 11:15:20 - INFO - Size of response: 80
-2025-03-25 11:15:23 - INFO - Size of response: 80
-2025-03-25 11:15:23 - INFO - Size of response: 80
-2025-03-25 11:15:23 - INFO - Size of response: 80
-2025-03-25 11:16:01 - INFO - Size of response: 80
-2025-03-25 11:16:03 - INFO - Size of response: 80
-2025-03-25 11:16:03 - INFO - Size of response: 80
-2025-03-25 11:16:04 - INFO - Size of response: 80
-2025-03-25 11:16:06 - INFO - Size of response: 80
-2025-03-25 11:16:06 - INFO - Size of response: 80
-2025-03-25 11:16:27 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+2025-03-25 14:21:34 - INFO - Checking for leader...
+2025-03-25 14:21:39 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:21:39 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:23:24 - INFO - Checking for leader...
+2025-03-25 14:23:29 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:23:29 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:23:34 - INFO - Size of response: 80
+2025-03-25 14:23:38 - INFO - Size of response: 80
+2025-03-25 14:23:38 - INFO - Size of response: 80
+2025-03-25 14:23:42 - INFO - Checking for leader...
+2025-03-25 14:23:47 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:23:47 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:24:04 - INFO - Size of response: 80
+2025-03-25 14:24:07 - INFO - Size of response: 80
+2025-03-25 14:24:07 - INFO - Size of response: 80
+2025-03-25 14:24:07 - INFO - Size of response: 80
+2025-03-25 14:24:09 - INFO - Size of response: 80
+2025-03-25 14:24:11 - INFO - Size of response: 80
+2025-03-25 14:24:13 - INFO - Size of response: 80
+2025-03-25 14:24:13 - INFO - Size of response: 80
+2025-03-25 14:24:14 - INFO - Size of response: 80
+2025-03-25 14:24:14 - INFO - Size of response: 80
+2025-03-25 14:24:15 - INFO - Size of response: 80
+2025-03-25 14:24:15 - INFO - Size of response: 80
+2025-03-25 14:24:17 - INFO - Size of response: 80
+2025-03-25 14:24:17 - INFO - Size of response: 80
+2025-03-25 14:25:29 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
 	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T11:16:27.312231-04:00"}"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T14:25:29.656124-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
 >
-2025-03-25 11:16:27 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+2025-03-25 14:25:29 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
 	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T11:16:27.312333-04:00"}"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:25:29.656214-04:00"}"
 >
-2025-03-25 11:16:27 - INFO - Checking for leader...
-2025-03-25 11:16:27 - INFO - Checking for leader...
-2025-03-25 11:16:32 - INFO - Leader found: 127.0.0.1:50001
-2025-03-25 11:16:32 - INFO - Info came from: 127.0.0.1:50005
-2025-03-25 11:16:32 - INFO - Leader found: 127.0.0.1:50001
-2025-03-25 11:16:32 - INFO - Info came from: 127.0.0.1:50005
-2025-03-25 11:16:44 - INFO - Size of response: 80
-2025-03-25 11:16:44 - INFO - Size of response: 80
-2025-03-25 11:16:47 - INFO - Size of response: 80
-2025-03-25 11:16:47 - INFO - Size of response: 80
+2025-03-25 14:25:29 - INFO - Checking for leader...
+2025-03-25 14:25:29 - INFO - Checking for leader...
+2025-03-25 14:25:34 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:25:34 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:25:34 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:25:34 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:26:17 - INFO - Checking for leader...
+2025-03-25 14:26:18 - INFO - Checking for leader...
+2025-03-25 14:26:22 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:26:22 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:26:23 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:26:23 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:26:27 - INFO - Size of response: 80
+2025-03-25 14:26:29 - INFO - Size of response: 80
+2025-03-25 14:26:30 - INFO - Size of response: 80
+2025-03-25 14:26:32 - INFO - Size of response: 80
+2025-03-25 14:26:35 - INFO - Size of response: 80
+2025-03-25 14:26:37 - INFO - Size of response: 80
+2025-03-25 14:26:39 - INFO - Size of response: 80
+2025-03-25 14:27:09 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T14:27:09.370378-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:27:09 - INFO - Checking for leader...
+2025-03-25 14:27:09 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T14:27:09.370524-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:27:09 - INFO - Checking for leader...
+2025-03-25 14:27:14 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 14:27:14 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:27:14 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 14:27:14 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:27:23 - INFO - Size of response: 80
+2025-03-25 14:27:24 - INFO - Size of response: 80
+2025-03-25 14:27:24 - INFO - Size of response: 80
+2025-03-25 14:27:24 - INFO - Size of response: 80
+2025-03-25 14:27:24 - INFO - Size of response: 80
+2025-03-25 14:27:27 - INFO - Size of response: 80
+2025-03-25 14:31:04 - INFO - Checking for leader...
+2025-03-25 14:31:05 - INFO - Checking for leader...
+2025-03-25 14:31:09 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 14:31:09 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:31:11 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 14:31:11 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:31:13 - INFO - Size of response: 80
+2025-03-25 14:31:15 - INFO - Size of response: 80
+2025-03-25 14:31:18 - INFO - Size of response: 80
+2025-03-25 14:31:20 - INFO - Size of response: 80
+2025-03-25 14:31:22 - INFO - Size of response: 80
+2025-03-25 14:31:24 - INFO - Size of response: 80
+2025-03-25 14:31:25 - INFO - Size of response: 80
+2025-03-25 14:31:25 - INFO - Size of response: 80
+2025-03-25 14:31:27 - INFO - Size of response: 80
+2025-03-25 14:31:27 - INFO - Size of response: 80
+2025-03-25 14:31:33 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50001 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:31:33.590507-04:00"}"
+>
+2025-03-25 14:31:33 - INFO - Checking for leader...
+2025-03-25 14:31:33 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50001 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:31:33.590567-04:00"}"
+>
+2025-03-25 14:31:33 - INFO - Checking for leader...
+2025-03-25 14:31:38 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:31:38 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:31:38 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:31:38 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:31:44 - INFO - Size of response: 80
+2025-03-25 14:31:44 - INFO - Size of response: 80
+2025-03-25 14:32:20 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:32:20.569056-04:00"}"
+>
+2025-03-25 14:32:20 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T14:32:20.569157-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:32:20 - INFO - Checking for leader...
+2025-03-25 14:32:20 - INFO - Checking for leader...
+2025-03-25 14:32:25 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:32:25 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:32:25 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:32:25 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:32:29 - INFO - Size of response: 80
+2025-03-25 14:32:29 - INFO - Size of response: 80
+2025-03-25 14:32:30 - INFO - Size of response: 80
+2025-03-25 14:32:30 - INFO - Size of response: 80
+2025-03-25 14:32:37 - INFO - Size of response: 80
+2025-03-25 14:32:37 - INFO - Size of response: 80
+2025-03-25 14:32:39 - INFO - Size of response: 80
+2025-03-25 14:32:39 - INFO - Size of response: 80
+2025-03-25 14:33:00 - INFO - Checking for leader...
+2025-03-25 14:33:05 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:05.45487-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:05 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:05.456198-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:05 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:05.457011-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:05 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:05.457749-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:05 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:05.45835-04:00"}"
+>
+2025-03-25 14:33:05 - INFO - Checking for leader...
+2025-03-25 14:33:10 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:10.462902-04:00"}"
+>
+2025-03-25 14:33:10 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:10.465333-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:10 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:10.466447-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:10 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:10.467296-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:10 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:10.468219-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:10 - INFO - Checking for leader...
+2025-03-25 14:33:15 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:15.472218-04:00"}"
+>
+2025-03-25 14:33:15 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:15.47475-04:00"}"
+>
+2025-03-25 14:33:15 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:15.475947-04:00"}"
+>
+2025-03-25 14:33:15 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:15.476853-04:00"}"
+>
+2025-03-25 14:33:15 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:15.477917-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:15 - INFO - Checking for leader...
+2025-03-25 14:33:20 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:20.480319-04:00"}"
+>
+2025-03-25 14:33:20 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:20.481199-04:00"}"
+>
+2025-03-25 14:33:20 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:20.481908-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:20 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:20.482544-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:20 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:20.483196-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:20 - INFO - Checking for leader...
+2025-03-25 14:33:25 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:25.4883-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:25 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:25.490309-04:00"}"
+>
+2025-03-25 14:33:25 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:25.491053-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:25 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:25.491551-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:25 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:25.491883-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:25 - INFO - Checking for leader...
+2025-03-25 14:33:30 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:30.49287-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:30 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:30.493325-04:00"}"
+>
+2025-03-25 14:33:30 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:30.493712-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:30 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:30.494314-04:00"}"
+>
+2025-03-25 14:33:30 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:30.495051-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:30 - INFO - Checking for leader...
+2025-03-25 14:33:35 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:35.496758-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:35 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:35.497353-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:35 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:35.497807-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:35 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:35.498258-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:35 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:35.49858-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:35 - INFO - Checking for leader...
+2025-03-25 14:33:40 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:40.503065-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:40 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:40.50475-04:00"}"
+>
+2025-03-25 14:33:40 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:40.505649-04:00"}"
+>
+2025-03-25 14:33:40 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:40.506646-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:40 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:40.50781-04:00"}"
+>
+2025-03-25 14:33:40 - INFO - Checking for leader...
+2025-03-25 14:33:45 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:45.509662-04:00"}"
+>
+2025-03-25 14:33:45 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:33:45.510139-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:33:45 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:45.510477-04:00"}"
+>
+2025-03-25 14:33:45 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:45.510767-04:00"}"
+>
+2025-03-25 14:33:45 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:33:45.511005-04:00"}"
+>
+2025-03-25 14:33:45 - INFO - Checking for leader...
+2025-03-25 14:34:10 - INFO - Checking for leader...
+2025-03-25 14:34:15 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:15.945956-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:15 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:15.947221-04:00"}"
+>
+2025-03-25 14:34:15 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:15.948168-04:00"}"
+>
+2025-03-25 14:34:15 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:15.949046-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:15 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:15.94987-04:00"}"
+>
+2025-03-25 14:34:15 - INFO - Checking for leader...
+2025-03-25 14:34:20 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:20.954062-04:00"}"
+>
+2025-03-25 14:34:20 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:20.95635-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:20 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50002: Failed to connect to remote host: Timeout occurred: FD shutdown"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50002: Failed to connect to remote host: Timeout occurred: FD shutdown", grpc_status:14, created_time:"2025-03-25T14:34:20.95797-04:00"}"
+>
+2025-03-25 14:34:20 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:20.959789-04:00"}"
+>
+2025-03-25 14:34:20 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:20.961127-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:20 - INFO - Checking for leader...
+2025-03-25 14:34:25 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50000: Failed to connect to remote host: Timeout occurred: FD shutdown"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50000: Failed to connect to remote host: Timeout occurred: FD shutdown", grpc_status:14, created_time:"2025-03-25T14:34:25.965806-04:00"}"
+>
+2025-03-25 14:34:25 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:25.967525-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:25 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:25.968443-04:00"}"
+>
+2025-03-25 14:34:25 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:25.969037-04:00"}"
+>
+2025-03-25 14:34:25 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:25.969654-04:00"}"
+>
+2025-03-25 14:34:25 - INFO - Checking for leader...
+2025-03-25 14:34:30 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50000: Failed to connect to remote host: Timeout occurred: FD shutdown"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:30.972677-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50000: Failed to connect to remote host: Timeout occurred: FD shutdown"}"
+>
+2025-03-25 14:34:30 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50001: Failed to connect to remote host: Timeout occurred: FD shutdown"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50001: Failed to connect to remote host: Timeout occurred: FD shutdown", grpc_status:14, created_time:"2025-03-25T14:34:30.9743-04:00"}"
+>
+2025-03-25 14:34:30 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:30.976111-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:30 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:30.976644-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:30 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:30.97699-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:30 - INFO - Checking for leader...
+2025-03-25 14:34:35 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:35.980051-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:35 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50001: Failed to connect to remote host: Timeout occurred: FD shutdown"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNAVAILABLE: ipv4:127.0.0.1:50001: Failed to connect to remote host: Timeout occurred: FD shutdown", grpc_status:14, created_time:"2025-03-25T14:34:35.982018-04:00"}"
+>
+2025-03-25 14:34:35 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:35.982851-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:35 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:35.983764-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:35 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:35.984585-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:35 - INFO - Checking for leader...
+2025-03-25 14:34:40 - ERROR - Error connecting to 127.0.0.1:50000: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:40.991653-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50000: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:40 - ERROR - Error connecting to 127.0.0.1:50001: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:40.993585-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50001: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:40 - ERROR - Error connecting to 127.0.0.1:50002: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50002: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2025-03-25T14:34:40.994386-04:00"}"
+>
+2025-03-25 14:34:40 - ERROR - Error connecting to 127.0.0.1:50003: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:40.995199-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50003: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:40 - ERROR - Error connecting to 127.0.0.1:50004: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:34:40.996171-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50004: Failed to connect to remote host: connect: Connection refused (61)"}"
+>
+2025-03-25 14:34:40 - ERROR - Could not find leader.
+2025-03-25 14:34:59 - INFO - Checking for leader...
+2025-03-25 14:35:04 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:35:04 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:35:08 - INFO - Size of response: 80
+2025-03-25 14:35:10 - INFO - Size of response: 80
+2025-03-25 14:35:11 - INFO - Size of response: 80
+2025-03-25 14:35:15 - INFO - Size of response: 80
+2025-03-25 14:35:48 - INFO - Checking for leader...
+2025-03-25 14:35:53 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:35:53 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:35:58 - INFO - Size of response: 80
+2025-03-25 14:36:00 - INFO - Size of response: 80
+2025-03-25 14:36:06 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:36:06.732548-04:00"}"
+>
+2025-03-25 14:36:06 - INFO - Checking for leader...
+2025-03-25 14:36:11 - INFO - Leader found: 127.0.0.1:50002
+2025-03-25 14:36:11 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:36:41 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:36:41.659821-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:36:41 - INFO - Checking for leader...
+2025-03-25 14:36:51 - INFO - Checking for leader...
+2025-03-25 14:36:56 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:36:56 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:37:04 - INFO - Size of response: 80
+2025-03-25 14:37:06 - INFO - Size of response: 80
+2025-03-25 14:37:13 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T14:37:13.083559-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:37:13 - INFO - Checking for leader...
+2025-03-25 14:37:18 - INFO - Leader found: 127.0.0.1:50000
+2025-03-25 14:37:18 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:37:57 - INFO - Size of response: 80
+2025-03-25 14:37:58 - INFO - Size of response: 80
+2025-03-25 14:38:39 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50000 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:38:39.407841-04:00"}"
+>
+2025-03-25 14:38:39 - INFO - Checking for leader...
+2025-03-25 14:38:50 - INFO - Checking for leader...
+2025-03-25 14:38:55 - INFO - Leader found: 127.0.0.1:50004
+2025-03-25 14:38:55 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:39:59 - INFO - Size of response: 80
+2025-03-25 14:40:02 - INFO - Size of response: 80
+2025-03-25 14:40:12 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T14:40:12.92777-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:40:12 - INFO - Checking for leader...
+2025-03-25 14:40:17 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 14:40:17 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:41:25 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T14:41:25.792429-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+2025-03-25 14:41:25 - INFO - Checking for leader...
+2025-03-25 14:41:35 - INFO - Checking for leader...
+2025-03-25 14:41:40 - INFO - Leader found: 127.0.0.1:50002
+2025-03-25 14:41:40 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:41:44 - INFO - Size of response: 80
+2025-03-25 14:41:45 - INFO - Size of response: 80
+2025-03-25 14:41:47 - INFO - Size of response: 80
+2025-03-25 14:41:53 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50002 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:41:53.042506-04:00"}"
+>
+2025-03-25 14:41:53 - INFO - Checking for leader...
+2025-03-25 14:41:58 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 14:41:58 - INFO - Info came from: 127.0.0.1:50000
+2025-03-25 14:42:04 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T14:42:04.308617-04:00"}"
+>
+2025-03-25 14:42:04 - INFO - Checking for leader...

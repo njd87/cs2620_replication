@@ -19,11 +19,14 @@ import json
 import traceback
 from replica_helpers import replicate_action
 
+'''
+Making sure the server is started with the correct arguments.
+'''
 if len(sys.argv) != 2:
     logging.error("Usage: python server.py <server_index>")
     sys.exit(1)
 
-# if it is and the argument is NOT an integer between 0 and 4
+# if it is and the argument is NOT an integer between 0 and 4, exit
 if not (0 <= int(sys.argv[1]) <= 4):
     logging.error("Invalid argument. Please enter an integer between 0 and 4")
     sys.exit(1)
@@ -159,6 +162,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon.close()
 
                     elif req.action == chat_pb2.LOGIN:
+                        # check if username and password match
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
 
@@ -339,6 +343,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon.close()
 
                     elif req.action == chat_pb2.PING:
+                        # update message to delivered
                         action = req.action
                         sender = req.sender
                         sent_message = req.sent_message
@@ -369,6 +374,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon.close()
 
                     elif req.action == chat_pb2.VIEW_UNDELIVERED:
+                        # view undelivered messages
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
 
@@ -438,6 +444,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                             )
 
                     elif req.action == chat_pb2.DELETE_ACCOUNT:
+                        # delete account if params match
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
 
@@ -511,6 +518,15 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         logging.info(f"[CHAT] {req.username} connected.")
                         if (req.username != "") and (req.username not in clients):
                             clients[req.username] = client_queue
+                            # update all messages recipient to delivered
+                            sqlcon = sqlite3.connect(db_path)
+                            sqlcur = sqlcon.cursor()
+                            sqlcur.execute(
+                                "UPDATE messages SET delivered=1 WHERE recipient=?",
+                                (req.username,),
+                            )
+                            sqlcon.commit()
+                            sqlcon.close()
                     else:
                         logging.error(f"[CHAT] Invalid action: {req.action}")
             except Exception as e:
@@ -524,10 +540,10 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                     del clients[username]
                     logging.info(f"[CHAT] {username} disconnected.")
 
-        # Run request handling in a separate thread.
+        # run request handling in a separate thread.
         threading.Thread(target=handle_requests, daemon=True).start()
 
-        # Continuously yield responses from the client's queue.
+        # continuously yield responses from the client's queue.
         while True:
             try:
                 response = client_queue.get()
@@ -595,25 +611,21 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
             logging.info(f"[RAFT] Lost majority. Server {idx} is leader.")
         raft_state = "FOLLOWER"
 
+        # update leader address if it has changed
         if leader_address != request.leader_address:
             logging.info(
                 f"[RAFT] Leader address changed from {leader_address} to {request.leader_address}"
             )
             leader_address = request.leader_address
 
-        # if outdated term, don't accept
-        if request.term < current_term:
-            response = raft_pb2.AppendEntriesResponse(term=current_term, success=False)
-            return response
-
         # check if no new entries
         # if so, just return current term
         if len(log) - 1 == request.most_recent_log_idx:
             response = raft_pb2.AppendEntriesResponse(term=current_term, success=True)
             return response
-
+        
+        # log all new entries and replicate action
         new_entries = request.entries[request.leader_commit + 1 :]
-
         for entry in new_entries:
             # add to log and replicate action
             log.append(entry)
@@ -665,16 +677,16 @@ def act():
                 f"[RAFT] No leader. Becoming candidate for term {current_term}."
             )
     elif raft_state == "CANDIDATE":
-        # If election times out (e.g., no majority reached), start a new election round.
+        # start new election
         if current_time >= timer:
             rec_votes = 1
-            current_term += 1
-            voted_for = idx  # vote for self
+            voted_for = idx
             timer = current_time + random.uniform(3, 5)
             logging.info(
                 f"[RAFT] Server {idx} election timeout as candidate. Starting new election for term {current_term}."
             )
             for other_servers in all_servers:
+                # ask for votes
                 try:
                     channel = grpc.insecure_channel(other_servers)
                     stub = raft_pb2_grpc.RaftServiceStub(channel)
@@ -696,6 +708,7 @@ def act():
                         f"[RAFT] Error sending vote request to {other_servers}: {e}"
                     )
             if rec_votes > num_servers // 2:
+                # won election
                 raft_state = "LEADER"
                 leader_address = f"{host}:{port}"
                 logging.info(
@@ -730,8 +743,9 @@ def act():
                 channel.close()
             except Exception as e:
                 logging.error(f"[RAFT] Error sending heartbeat to {other_server}: {e}")
-        # Set the next heartbeat timeout (e.g., 1 second later)
+
         if successes < num_servers // 2:
+            # step down, didn't receive enough responses
             logging.info(f"[RAFT] Leader {idx} lost majority. Stepping down.")
             raft_state = "FOLLOWER"
             leader_address = None
@@ -778,7 +792,7 @@ def serve():
 
     logging.info(f"[SETUP] Server started on port {port}")
     # wait for random time from 1 to 5 seconds before starting, to allow one server to become leader
-    time.sleep(random.random(1, 5))
+    time.sleep(2 * random.random())
     try:
         while True:
             act()
