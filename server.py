@@ -115,7 +115,6 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
             nonlocal username
             try:
                 for req in request_iterator:
-                    print('Received request:', req)
                     # print size of req in bytes
                     logging.info(f"[CHAT] Size of request: {sys.getsizeof(req)} bytes")
                     log_copy = raft_pb2.LogEntry(action=req.action, username=req.username, passhash=req.passhash, user2=req.user2, sender=req.sender, recipient=req.recipient, message=req.message, sent_message=req.sent_message, n_messages=req.n_messages, message_id=req.message_id, term=current_term)
@@ -494,13 +493,12 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                     elif req.action == chat_pb2.CONNECT:
                         # a new leader was chosen, client connected to new leader
                         # add the user to the clients if they are signed in
-                        print("New user:", req.username)
+                        logging.info("New user:", req.username)
                         if (req.username != "") and (req.username not in clients):
                             clients[req.username] = client_queue
                     else:
                         logging.error(f"[CHAT] Invalid action: {req.action}")
             except Exception as e:
-                print("WHOOPS CONNECT")
                 tb = traceback.extract_tb(e.__traceback__)
                 line_number = tb[-1].lineno if tb else "unknown"
                 logging.error(
@@ -569,11 +567,11 @@ class RaftServiceServicer(raft_pb2_grpc.RaftServiceServicer):
         timer = time.time() + random.uniform(0.3, 0.5)
 
         if raft_state == "LEADER":
-            print("I have lost majority")
+            logging.info(f"[RAFT] Lost majority. Server {idx} is leader.")
         raft_state = "FOLLOWER"
 
         if leader_address != request.leader_address:
-            print("new leader:", request.leader_address)
+            logging.info(f"[RAFT] Leader address changed from {leader_address} to {request.leader_address}")
             leader_address = request.leader_address
             
         # check if the leader's term is less than the current term
@@ -623,7 +621,6 @@ def act():
     if raft_state == "FOLLOWER":
         # no heartbeat, become candidate
         if current_time >= timer:
-            print("Didn't hear from leader, becoming candidate")
             raft_state = "CANDIDATE"
             current_term += 1
             # timer = current_time + random.uniform(3, 5)
@@ -652,12 +649,10 @@ def act():
                 except Exception as e:
                     logging.error(f"[RAFT] Error sending vote request to {other_servers}: {e}")
             if rec_votes > num_servers // 2:
-                print(f"I am the leader, log number {idx + 1}")
                 raft_state = "LEADER"
                 leader_address = f"{host}:{port}"
-                logging.info(f"[RAFT] Server {idx} elected as leader for term {current_term}.")
+                logging.info(f"[RAFT] Server {idx} (self) elected as leader for term {current_term}.")
             else:
-                print("Didn't win election")
                 logging.info(f"[RAFT] Server {idx} did not win election for term {current_term}.")
     elif raft_state == "LEADER":
         # send out heartbeats to all other servers
@@ -682,7 +677,6 @@ def act():
                 logging.error(f"[RAFT] Error sending heartbeat to {other_server}: {e}")
         # Set the next heartbeat timeout (e.g., 1 second later)
         if successes < num_servers // 2:
-            print("STEPPING DOWN")
             logging.info(f"[RAFT] Leader {idx} lost majority. Stepping down.")
             raft_state = "FOLLOWER"
             leader_address = None

@@ -247,7 +247,6 @@ class ClientUI:
                         self.users.append(pinging_user)
                         self.rerender_users()
         except grpc.RpcError as e:
-            print("I KNOW SERVER IS DOWN")
             logging.error(f"Error receiving response: {e}")
         
     
@@ -261,7 +260,7 @@ class ClientUI:
             self.request_thread.join()
         except:
             pass
-        print('leader not found. checking for new leader...')
+        logging.info("Checking for leader...")
         time.sleep(5)
         # we want to make sure that we are connected to the leader
         # if we are not connected OR we had errors in connecting to the leader
@@ -273,8 +272,8 @@ class ClientUI:
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
                 response = stub.GetLeader(raft_pb2.GetLeaderRequest(useless=True))
                 if response.leader_address:
-                    print('Leader found:', response.leader_address)
-                    print('Info came from:', server)
+                    logging.info('Leader found:', response.leader_address)
+                    logging.info('Info came from:', server)
                     self.leader_address = response.leader_address
                     break
             except grpc.RpcError as e:
@@ -292,6 +291,7 @@ class ClientUI:
             self.request_thread = threading.Thread(target=self.handle_responses, daemon=True)
             self.request_thread.start()
             time.sleep(1)
+            # this NEEDS to happen twice due to multiple threads
             self.send_connect_request()
             self.send_connect_request()
 
@@ -305,7 +305,6 @@ class ClientUI:
             username=self.credentials
         )
 
-        print(f"TELLING {self.leader_address} TO CONNECT")
         outgoing_queue.put(request)
 
     def reset_login_vars(self):
