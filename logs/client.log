@@ -1,177 +1,39 @@
-2025-03-25 01:16:03 - INFO - Size of response: 80
-2025-03-25 01:16:05 - INFO - Size of response: 80
-2025-03-25 01:16:05 - INFO - Size of response: 80
-2025-03-25 01:16:13 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+2025-03-25 11:15:02 - INFO - Checking for leader...
+2025-03-25 11:15:07 - INFO - Checking for leader...
+2025-03-25 11:15:07 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 11:15:07 - INFO - Info came from: 127.0.0.1:50005
+2025-03-25 11:15:12 - INFO - Leader found: 127.0.0.1:50003
+2025-03-25 11:15:12 - INFO - Info came from: 127.0.0.1:50005
+2025-03-25 11:15:14 - INFO - Size of response: 80
+2025-03-25 11:15:17 - INFO - Size of response: 80
+2025-03-25 11:15:17 - INFO - Size of response: 80
+2025-03-25 11:15:20 - INFO - Size of response: 80
+2025-03-25 11:15:23 - INFO - Size of response: 80
+2025-03-25 11:15:23 - INFO - Size of response: 80
+2025-03-25 11:15:23 - INFO - Size of response: 80
+2025-03-25 11:16:01 - INFO - Size of response: 80
+2025-03-25 11:16:03 - INFO - Size of response: 80
+2025-03-25 11:16:03 - INFO - Size of response: 80
+2025-03-25 11:16:04 - INFO - Size of response: 80
+2025-03-25 11:16:06 - INFO - Size of response: 80
+2025-03-25 11:16:06 - INFO - Size of response: 80
+2025-03-25 11:16:27 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
 	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50001 {created_time:"2025-03-25T01:16:13.090633-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T11:16:27.312231-04:00"}"
 >
-2025-03-25 01:19:37 - INFO - Size of response: 80
-2025-03-25 01:19:39 - INFO - Size of response: 80
-2025-03-25 01:19:46 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
+2025-03-25 11:16:27 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
 	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50002 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:19:46.435627-04:00"}"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T11:16:27.312333-04:00"}"
 >
-2025-03-25 01:20:01 - INFO - Deleting Account: nick
-2025-03-25 01:20:01 - INFO - Size of response: 80
-2025-03-25 01:21:19 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50001 {created_time:"2025-03-25T01:21:19.720876-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:21:47 - INFO - Size of response: 80
-2025-03-25 01:21:48 - INFO - Size of response: 80
-2025-03-25 01:21:57 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50002 {created_time:"2025-03-25T01:21:57.855081-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:22:09 - INFO - Deleting Account: nick
-2025-03-25 01:22:09 - INFO - Size of response: 80
-2025-03-25 01:22:14 - INFO - Deleting Account: nick
-2025-03-25 01:22:14 - INFO - Size of response: 80
-2025-03-25 01:22:19 - INFO - Deleting Account: nick
-2025-03-25 01:22:19 - INFO - Size of response: 80
-2025-03-25 01:22:22 - INFO - Deleting Account: nick
-2025-03-25 01:22:22 - INFO - Size of response: 80
-2025-03-25 01:22:27 - INFO - Deleting Account: nick
-2025-03-25 01:22:27 - INFO - Size of response: 80
-2025-03-25 01:22:29 - INFO - Deleting Account: nick
-2025-03-25 01:22:29 - INFO - Size of response: 80
-2025-03-25 01:22:31 - INFO - Deleting Account: nick
-2025-03-25 01:22:31 - INFO - Size of response: 80
-2025-03-25 01:22:35 - INFO - Deleting Account: nick
-2025-03-25 01:22:35 - INFO - Size of response: 80
-2025-03-25 01:22:38 - INFO - Deleting Account: nick
-2025-03-25 01:22:38 - INFO - Size of response: 80
-2025-03-25 01:22:40 - INFO - Deleting Account: nick
-2025-03-25 01:22:40 - INFO - Size of response: 80
-2025-03-25 01:25:28 - INFO - Size of response: 80
-2025-03-25 01:25:31 - INFO - Size of response: 80
-2025-03-25 01:25:31 - INFO - Size of response: 80
-2025-03-25 01:25:38 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50001 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:25:38.973868-04:00"}"
->
-2025-03-25 01:28:54 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T01:28:54.092202-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:30:11 - INFO - Size of response: 80
-2025-03-25 01:30:13 - INFO - Size of response: 80
-2025-03-25 01:30:23 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {created_time:"2025-03-25T01:30:23.819584-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:31:30 - INFO - Size of response: 80
-2025-03-25 01:31:31 - INFO - Size of response: 80
-2025-03-25 01:31:31 - INFO - Size of response: 80
-2025-03-25 01:31:44 - INFO - Size of response: 80
-2025-03-25 01:31:46 - INFO - Size of response: 80
-2025-03-25 01:31:46 - INFO - Size of response: 80
-2025-03-25 01:31:50 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50003 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:31:50.805473-04:00"}"
->
-2025-03-25 01:32:09 - INFO - Size of response: 80
-2025-03-25 01:32:11 - INFO - Size of response: 80
-2025-03-25 01:32:20 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50001 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:32:20.775396-04:00"}"
->
-2025-03-25 01:33:16 - INFO - Size of response: 80
-2025-03-25 01:33:21 - INFO - Size of response: 80
-2025-03-25 01:33:24 - INFO - Size of response: 80
-2025-03-25 01:33:27 - INFO - Size of response: 80
-2025-03-25 01:33:38 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {created_time:"2025-03-25T01:33:38.688504-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:33:49 - INFO - Size of response: 80
-2025-03-25 01:33:49 - INFO - Size of response: 80
-2025-03-25 01:33:50 - INFO - Size of response: 80
-2025-03-25 01:33:51 - INFO - Size of response: 80
-2025-03-25 01:33:53 - INFO - Size of response: 80
-2025-03-25 01:34:30 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50005 {created_time:"2025-03-25T01:34:30.553162-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:35:08 - INFO - Size of response: 80
-2025-03-25 01:35:10 - INFO - Size of response: 80
-2025-03-25 01:35:39 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50005 {created_time:"2025-03-25T01:35:39.722664-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:35:44 - ERROR - Error connecting to 127.0.0.1:50005: <_InactiveRpcError of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50005: Failed to connect to remote host: connect: Connection refused (61)"
-	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T01:35:44.730913-04:00", grpc_status:14, grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50005: Failed to connect to remote host: connect: Connection refused (61)"}"
->
-2025-03-25 01:45:25 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer  {created_time:"2025-03-25T01:45:25.639767-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:47:13 - INFO - Size of response: 80
-2025-03-25 01:47:15 - INFO - Size of response: 80
-2025-03-25 01:47:23 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:47:23.10926-04:00"}"
->
-2025-03-25 01:47:48 - INFO - Size of response: 80
-2025-03-25 01:47:55 - INFO - Size of response: 80
-2025-03-25 01:48:06 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50005 {created_time:"2025-03-25T01:48:06.083754-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:51:34 - INFO - Size of response: 80
-2025-03-25 01:51:36 - INFO - Size of response: 80
-2025-03-25 01:51:42 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50004 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:51:42.909124-04:00"}"
->
-2025-03-25 01:51:57 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:51:57.607842-04:00"}"
->
-2025-03-25 01:52:51 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:52:51.665718-04:00"}"
->
-2025-03-25 01:53:20 - INFO - Size of response: 80
-2025-03-25 01:53:22 - INFO - Size of response: 80
-2025-03-25 01:53:22 - INFO - Size of response: 80
-2025-03-25 01:53:26 - INFO - Size of response: 80
-2025-03-25 01:53:27 - INFO - Size of response: 80
-2025-03-25 01:53:27 - INFO - Size of response: 80
-2025-03-25 01:53:27 - INFO - Size of response: 80
-2025-03-25 01:53:35 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50002 {created_time:"2025-03-25T01:53:35.47161-04:00", grpc_status:14, grpc_message:"Cancelling all calls"}"
->
-2025-03-25 01:53:35 - ERROR - Error receiving response: <_MultiThreadedRendezvous of RPC that terminated with:
-	status = StatusCode.UNAVAILABLE
-	details = "Cancelling all calls"
-	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:50002 {grpc_message:"Cancelling all calls", grpc_status:14, created_time:"2025-03-25T01:53:35.47174-04:00"}"
->
-2025-03-25 01:53:45 - INFO - Size of response: 80
-2025-03-25 01:53:48 - INFO - Size of response: 80
-2025-03-25 01:53:48 - INFO - Size of response: 80
-2025-03-25 01:53:48 - INFO - Size of response: 80
-2025-03-25 01:53:49 - INFO - Size of response: 80
-2025-03-25 01:53:49 - INFO - Size of response: 80
+2025-03-25 11:16:27 - INFO - Checking for leader...
+2025-03-25 11:16:27 - INFO - Checking for leader...
+2025-03-25 11:16:32 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 11:16:32 - INFO - Info came from: 127.0.0.1:50005
+2025-03-25 11:16:32 - INFO - Leader found: 127.0.0.1:50001
+2025-03-25 11:16:32 - INFO - Info came from: 127.0.0.1:50005
+2025-03-25 11:16:44 - INFO - Size of response: 80
+2025-03-25 11:16:44 - INFO - Size of response: 80
+2025-03-25 11:16:47 - INFO - Size of response: 80
+2025-03-25 11:16:47 - INFO - Size of response: 80

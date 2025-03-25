@@ -117,6 +117,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                 for req in request_iterator:
                     # print size of req in bytes
                     logging.info(f"[CHAT] Size of request: {sys.getsizeof(req)} bytes")
+                    # create a copy of req with different memory
                     log_copy = raft_pb2.LogEntry(action=req.action, username=req.username, passhash=req.passhash, user2=req.user2, sender=req.sender, recipient=req.recipient, message=req.message, sent_message=req.sent_message, n_messages=req.n_messages, message_id=req.message_id, term=current_term)
                     log.append(log_copy)
 
@@ -149,11 +150,11 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                         sqlcon = sqlite3.connect(db_path)
                         sqlcur = sqlcon.cursor()
 
-                        req.passhash = hashlib.sha256(req.passhash.encode()).hexdigest()
+                        new_passhash = hashlib.sha256(req.passhash.encode()).hexdigest()
 
                         sqlcur.execute(
                             "SELECT * FROM users WHERE username=? AND passhash=?",
-                            (req.username, req.passhash),
+                            (req.username, new_passhash),
                         )
 
                         # if username and password match, send response with success=True
@@ -209,12 +210,12 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                             )
                         else:
                             # add new user to database
-                            req.passhash = hashlib.sha256(
+                            new_passhash = hashlib.sha256(
                                 req.passhash.encode()
                             ).hexdigest()
                             sqlcur.execute(
                                 "INSERT INTO users (username, passhash) VALUES (?, ?)",
-                                (req.username, req.passhash),
+                                (req.username, new_passhash),
                             )
                             sqlcon.commit()
                             response = chat_pb2.ChatResponse(
@@ -493,7 +494,7 @@ class ChatServiceServicer(chat_pb2_grpc.ChatServiceServicer):
                     elif req.action == chat_pb2.CONNECT:
                         # a new leader was chosen, client connected to new leader
                         # add the user to the clients if they are signed in
-                        logging.info("New user:", req.username)
+                        logging.info(f"[CHAT] {req.username} connected.")
                         if (req.username != "") and (req.username not in clients):
                             clients[req.username] = client_queue
                     else:

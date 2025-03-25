@@ -51,3 +51,26 @@ since we just want to change the databases and nothing else. A lot of this code 
 interacts with the client (that is, it won't be interacting with the client at all!)
 
 The client also shuts down connections if it fails to find any server after 6 retries (just so it is not perpetually trying to connect to a socket).
+
+03/25/25
+Ok, should now be prepared for testing. Here's the schematic:
+- Once servers are all connected, an election is run
+- Leader is selected via majority vote
+- Every 0.1 seconds, leader sends heartbeat containing logs to all followers
+- If there is a difference between the last commit and previous entries, followers replicate actions then vote to commit
+- Commit succeeds with majority vote
+- When client connects, it finds leader and connects
+- Any request handled by leader is appended to logs and sent in next heartbeat
+- If leader goes down, client detects server is down and waits for next election to finish before getting new leader
+    - The client needs to send 2 connect requests, because (the way threads work) it needs to join the previous thread and crash it via a yield statement
+
+Now that the process is stable, we can begin testing each part via unit tests.
+
+Added tests to make sure function functionality works for all servers and replicas.
+Also added new test case to ensure the system works with 0 crashes, 1 crash, and 2 crashes,
+but then doesn't work with 3 or more crashes.
+Also fixed bug where requests would be overwritten in the "handle_requests" by the leader by
+creating copys of the variables.
+
+Now, we work on getting it to work across devices. From what we remember, there should be a public IP address command (from lecture)
+that we can run.

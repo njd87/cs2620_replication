@@ -1,12 +1,77 @@
 import sqlite3
 import chat_pb2
+import raft_pb2
 import hashlib
+from replica_helpers import replicate_action
 
-db_path = "data/test_database.db"
+class TestServer:
+    '''
+    Test server to simulate raft server
+    '''
+    def __init__(self, name, db_path):
+        self.leader = None
+        self.name = name
+        self.db_path = db_path
+        self.voted_for = None
+        self.servers = None
+        self.log = []
+        self.online = True
 
-def handle_requests(req, username=None):
-    # print size of req in bytes
 
+    def Crash(self):
+        self.online = False
+
+    def Vote(self, req):
+        # vote if not already voted
+        if self.voted_for is not None or not self.online:
+            return raft_pb2.VoteResponse(term=1, vote_granted=False)
+        return raft_pb2.VoteResponse(term=1, vote_granted=True)
+    def AppendEntries(self, req):
+        if not self.online:
+            return raft_pb2.AppendEntriesResponse(term=1, success=False)
+        # clear voted_for
+        self.voted_for = None
+        # add new leader
+        self.leader = req.leader_address
+
+        # look for new entires
+        try:
+            new_entries = req.entries[len(self.log):]
+            for entry in new_entries:
+                # add to log and replicate action
+                self.log.append(entry)
+                replicate_action(entry, self.db_path)
+
+        except Exception as e:
+            print(f"Error: {e}")
+
+        response = raft_pb2.AppendEntriesResponse(
+            term=req.term,
+            success=True
+        )
+        return response
+    
+    def GetLeader(self, req):
+        return raft_pb2.GetLeaderResponse(leader_address=self.leader)
+    
+    def run_for_leader(self):
+        '''
+        Run for leader
+        '''
+        total_servers = len(self.servers)
+        votes = 0
+
+        for server in self.servers.values():
+            if server != self:
+                response = server.Vote(raft_pb2.VoteRequest(term=1))
+                if response.vote_granted:
+                    votes += 1
+
+        if votes >= total_servers // 2 + 1:
+            self.leader = self.name
+            return True
+
+def handle_requests(req, db_path, username=None):
     if req.action == chat_pb2.CHECK_USERNAME:
         # check if username is already in use
         sqlcon = sqlite3.connect(db_path)
@@ -29,11 +94,11 @@ def handle_requests(req, username=None):
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
-        req.passhash = hashlib.sha256(req.passhash.encode()).hexdigest()
+        new_passhash = hashlib.sha256(req.passhash.encode()).hexdigest()
 
         sqlcur.execute(
             "SELECT * FROM users WHERE username=? AND passhash=?",
-            (req.username, req.passhash),
+            (req.username, new_passhash),
         )
 
         # if username and password match, send response with result=True
@@ -78,10 +143,10 @@ def handle_requests(req, username=None):
             return chat_pb2.ChatResponse(action=chat_pb2.REGISTER, result=False)
         else:
             # add new user to database
-            req.passhash = hashlib.sha256(req.passhash.encode()).hexdigest()
+            new_passhash = hashlib.sha256(req.passhash.encode()).hexdigest()
             sqlcur.execute(
                 "INSERT INTO users (username, passhash) VALUES (?, ?)",
-                (req.username, req.passhash),
+                (req.username, new_passhash),
             )
             sqlcon.commit()
             response = chat_pb2.ChatResponse(

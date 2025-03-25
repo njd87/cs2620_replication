@@ -81,8 +81,7 @@ class ClientUI:
         
         self.credentials = None
         self.leader_address = None
-        self.leader_check_thread = threading.Thread(target=self.continue_check_for_leader, daemon=True)
-        self.leader_check_thread.start()
+        self.check_for_leader()
 
         # setup first screen
         self.setup_user_entry()
@@ -248,6 +247,7 @@ class ClientUI:
                         self.rerender_users()
         except grpc.RpcError as e:
             logging.error(f"Error receiving response: {e}")
+            self.check_for_leader()
         
     
     def continue_check_for_leader(self):
@@ -256,10 +256,6 @@ class ClientUI:
             time.sleep(3)
     
     def check_for_leader(self, retries=6):
-        try:
-            self.request_thread.join()
-        except:
-            pass
         logging.info("Checking for leader...")
         time.sleep(5)
         # we want to make sure that we are connected to the leader
@@ -272,8 +268,8 @@ class ClientUI:
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
                 response = stub.GetLeader(raft_pb2.GetLeaderRequest(useless=True))
                 if response.leader_address:
-                    logging.info('Leader found:', response.leader_address)
-                    logging.info('Info came from:', server)
+                    logging.info(f'Leader found: {response.leader_address}')
+                    logging.info(f'Info came from: {server}')
                     self.leader_address = response.leader_address
                     break
             except grpc.RpcError as e:

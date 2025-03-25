@@ -5,35 +5,35 @@ import os
 import hashlib
 import grpc
 
-def replicate_action(action, db_path):
+def replicate_action(req, db_path):
     """
     Replicate the action to the database
     """
-    if action.action == raft_pb2.REGISTER:
+    if req.action == raft_pb2.REGISTER:
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
         # check to make sure username is not already in use
         sqlcur.execute(
-            "SELECT * FROM users WHERE username=?", (action.username,)
+            "SELECT * FROM users WHERE username=?", (req.username,)
         )
         if sqlcur.fetchone():
             pass
         else:
             # add new user to database
-            action.passhash = hashlib.sha256(
-                action.passhash.encode()
+            new_passhash = hashlib.sha256(
+                req.passhash.encode()
             ).hexdigest()
             sqlcur.execute(
                 "INSERT INTO users (username, passhash) VALUES (?, ?)",
-                (action.username, action.passhash),
+                (req.username, new_passhash),
             )
             sqlcon.commit()
         sqlcon.close()
-    elif action.action == raft_pb2.SEND_MESSAGE:
-        sender = action.sender
-        recipient = action.recipient
-        message = action.message
+    elif req.action == raft_pb2.SEND_MESSAGE:
+        sender = req.sender
+        recipient = req.recipient
+        message = req.message
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
@@ -48,11 +48,10 @@ def replicate_action(action, db_path):
             message_id = None
 
         sqlcon.close()
-    elif action.action == raft_pb2.PING:
-        action = action.action
-        sender = action.sender
-        sent_message = action.sent_message
-        message_id = action.message_id
+    elif req.action == raft_pb2.PING:
+        sender = req.sender
+        sent_message = req.sent_message
+        message_id = req.message_id
 
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
@@ -65,11 +64,11 @@ def replicate_action(action, db_path):
 
         sqlcon.close()
 
-    elif action.action == raft_pb2.VIEW_UNDELIVERED:
+    elif req.action == raft_pb2.VIEW_UNDELIVERED:
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
         
-        username = action.username
+        username = req.username
         
         sqlcur.execute(
             "UPDATE messages SET delivered=1 WHERE recipient=?",
@@ -78,24 +77,25 @@ def replicate_action(action, db_path):
 
         sqlcon.commit()
         sqlcon.close()
-    elif action.action == raft_pb2.DELETE_MESSAGE:
+    elif req.action == raft_pb2.DELETE_MESSAGE:
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
-        message_id = action.message_id
+        message_id = req.message_id
         sqlcur.execute(
             "DELETE FROM messages WHERE message_id=?", (message_id,)
         )
         sqlcon.commit()
 
         sqlcon.close()
-    elif action.action == raft_pb2.DELETE_ACCOUNT:
+    elif req.action == raft_pb2.DELETE_ACCOUNT:
         sqlcon = sqlite3.connect(db_path)
         sqlcur = sqlcon.cursor()
 
-        username = action.username
-        passhash = action.passhash
+        username = req.username
+        passhash = req.passhash
 
+        # check if user exists
         passhash = hashlib.sha256(passhash.encode()).hexdigest()
         sqlcur.execute(
             "SELECT passhash FROM users WHERE username=?", (username,)
@@ -113,5 +113,11 @@ def replicate_action(action, db_path):
                     (username, username),
                 )
                 sqlcon.commit()
+
+
+            # check to make sure user is deleted
+            s = sqlcur.execute(
+                "SELECT * FROM users WHERE username=?", (username,)
+            )
 
         sqlcon.close()
