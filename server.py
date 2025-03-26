@@ -766,7 +766,7 @@ def serve():
     chat_pb2_grpc.add_ChatServiceServicer_to_server(ChatServiceServicer(), server)
     raft_pb2_grpc.add_RaftServiceServicer_to_server(RaftServiceServicer(), server)
     print(f"{host}:{port}")
-    server.add_insecure_port(f"{host}:{port}")
+    server.add_insecure_port(f"0.0.0.0:{port}")
     server.start()
 
     # make sure all servers are running before starting

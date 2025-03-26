@@ -73,4 +73,7 @@ Also fixed bug where requests would be overwritten in the "handle_requests" by t
 creating copys of the variables.
 
 Now, we work on getting it to work across devices. From what we remember, there should be a public IP address command (from lecture)
-that we can run.
+that we can run. We get this from ifconfig.
+
+Ok, there was a MAJOR issue with my computer (firewall haha), but should be resolved now.
+Dropped out servers can also rejoin and receive a heartbeat with updated logs.

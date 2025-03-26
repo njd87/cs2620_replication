@@ -19,6 +19,10 @@ import json
 import traceback
 from replica_helpers import replicate_action
 
+# make grpc more verbose
+os.environ["GRPC_VERBOSITY"] = "DEBUG"
+os.environ["GRPC_TRACE"] = "all"
+
 '''
 Making sure the server is started with the correct arguments.
 '''
@@ -765,22 +769,22 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     chat_pb2_grpc.add_ChatServiceServicer_to_server(ChatServiceServicer(), server)
     raft_pb2_grpc.add_RaftServiceServicer_to_server(RaftServiceServicer(), server)
-    print(f"{host}:{port}")
-    server.add_insecure_port(f"{host}:{port}")
+    server.add_insecure_port(f"0.0.0.0:{port}")
     server.start()
 
-    other_server = "10.250.195.98:50003"
-
+    other_server = "10.250.195.98:50001"
     while True:
-        # try to connect to other server
         try:
+            # try to connect to other server
             channel = grpc.insecure_channel(other_server)
             stub = raft_pb2_grpc.RaftServiceStub(channel)
             response = stub.GetLeader(raft_pb2.GetLeaderRequest(useless=True))
             print(response)
-        except:
-            print("Couldn't connect. Retrying...")
-            time.sleep(1)
+            print('correctly connected')
+            time.sleep(10)
+            break
+        except Exception as e:
+            logging.error(f"Error connecting to other server: {e}")
 
 
 if __name__ == "__main__":
